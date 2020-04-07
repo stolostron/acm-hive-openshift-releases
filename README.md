@@ -44,3 +44,19 @@ spec:
 oc apply -f clusterImageSets/
 ```
 - After about 60s the Create Cluster user interface will list only the images available in  your forked repository
+
+## Secure Github repostiory
+- Uncomment the secret reference in `subscription/channel.yaml`
+- Create a `subscription/secret.yaml` file with the following contents
+```yaml
+---
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: my-github-secret
+    namespace: demo
+  data:
+    user: BASE64_ENCODED_GITHUB_USERNAME
+    accessToken: BASE64_ENCODED_GITHUB_TOKEN
+```
+- The following command is used to encode base64: `echo "VALUE_TO_ENCODE" | base64`  place the output in the yaml file.

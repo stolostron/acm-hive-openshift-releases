@@ -6,6 +6,7 @@ metadata:
   namespace: ocp-clusterimagesets
 spec:
   type: GitHub
-  pathname: https://github.com/open-cluster-management/acm-hive-openshift-versions.git
-  secretRef:
-    name: my-github-secret
+  pathname: https://github.com/open-cluster-management/acm-hive-openshift-releases.git
+  # Disable when using a Public repository
+  #secretRef:
+  #  name: my-github-secret

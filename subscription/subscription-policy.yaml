@@ -7,7 +7,7 @@ metadata:
     apps.open-cluster-management.io/github-path: clusterImageSets
     apps.open-cluster-management.io/github-branch: master
 spec:
-  channel: ocp-clusterimagesets/openshift-release-images
+  channel: ocp-clusterimagesets/openshift-release-dev-images
   placement:
    local: true
 
