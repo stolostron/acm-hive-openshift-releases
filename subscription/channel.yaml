@@ -1,0 +1,11 @@
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: openshift-release-dev-images
+  namespace: ocp-clusterimagesets
+spec:
+  type: GitHub
+  pathname: https://github.com/open-cluster-management/acm-hive-openshift-versions.git
+  secretRef:
+    name: my-github-secret

@@ -1,0 +1,5 @@
+resources:
+- namespace.yaml
+- secret.yaml
+- channel.yaml
+- subscription-policy.yaml
