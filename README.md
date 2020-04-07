@@ -54,9 +54,13 @@ oc apply -f clusterImageSets/
   kind: Secret
   metadata:
     name: my-github-secret
-    namespace: demo
+    namespace: ocp-clusterimagesets
   data:
     user: BASE64_ENCODED_GITHUB_USERNAME
     accessToken: BASE64_ENCODED_GITHUB_TOKEN
 ```
 - The following command is used to encode base64: `echo "VALUE_TO_ENCODE" | base64`  place the output in the yaml file.
+- Create the secret
+```bash
+oc apply -f subscription/secret.yaml
+``
