@@ -1,0 +1,11 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: openshift-release-dev-images
+spec:
+  timewindow:
+    windowtype: "active"
+    location: "America/Toronto"
+    hours:
+      - start: "02:00AM"
+        end: "02:30AM"

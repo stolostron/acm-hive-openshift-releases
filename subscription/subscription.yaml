@@ -10,4 +10,3 @@ spec:
   channel: ocp-clusterimagesets/openshift-release-dev-images
   placement:
    local: true
-
