@@ -1,15 +1,20 @@
 # OpenShift Release Images
 This repository provides a subscription that will populate all the latest OpenShift images into ACM for depoyment
 
-## Usecase - ONLINE - all available images
-- Populates the latest OpenShift release images for use with Advanced Cluster Management
+# Changes to the default images in the channel
+- This repository will provide the two latest `stable` images and the initial image for OpenShift 4.3.
+- Also included will be the two latest release candidates for OpenShift 4.4
+- To learn how to curate your own images, see `ONLINE - custom curated` below
+
+## ONLINE - latest stable images
+- Populates the 2x latest OpenShift stable release images, the base stable image for 4.3.0 and the two latest 4.4 release candidates for use with Advanced Cluster Management
 - Run the following command
 ```bash
 oc apply -k subscription/
 ```
 - After about 60s the Create Cluster user interface will list all available OpenShift 4.4 images
 
-## Usecase - ONLINE - limited images
+## ONLINE - custom curated
 - Fork this repository
 - Update the the `./subscription/channel.yaml` file, changing `open-cluster-management` to your `name` or `organization` for the forked repository.
 ```yaml
@@ -17,13 +22,20 @@ spec:
   type: GitHub
   pathname: https://github.com/NAME_or_ORGANIZATION/acm-hive-openshift-versions.git
 ```
-- Delete the YAML files for Openshift releases you do not want to display in Advanced Cluster Management
+- Place the YAML files for the images you want to appear in the ACM UI under `./clusterImageSets/4.3` or `./clusterImageSets/4.4`
 - Commit and push your changes to the forked repository
 - Run the following command
 ```bash
 oc apply -k subscription/
 ```
 - After about 60s the Create Cluster user interface will list only the images available in  your forked repository
+- Add new OpenShift install images by created additional files in the `4.3` and `4.4` directories
+
+## How to get new versions
+- This repository will automatically update with the latest stable versions
+- You can monitor this repository and merge changes if you forked it
+- As soon as new images are committed to this repository or your fork, they will become available in the ACM console within 60s
+- This is the stable stream: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml
 
 
 ## (ALPHA) Usecase - OFFLINE - limited images
