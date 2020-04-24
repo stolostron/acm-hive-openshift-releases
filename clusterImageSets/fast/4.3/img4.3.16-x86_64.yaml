@@ -2,7 +2,7 @@
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
-    name: img4.3.16-fast
+    name: img4.3.16-x86-64
     labels:
       channel: fast
 spec:
