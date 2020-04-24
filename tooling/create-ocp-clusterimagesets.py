@@ -16,11 +16,15 @@ for version in ["4.3", "4.4"]:
             if ("x86_64" in tag and version in tag):
                 print('Checking tag: {}'.format(tag), end='')
                 # Check if we already have the file in the primary or archive
-                fileName="clusterImageSets/" + version + "/img" + tag + ".yaml"
-                if not (os.path.isfile(fileName) or os.path.isfile("clusterImageSets/archive/" + version + "/img" + tag + ".yaml")):
+                fileName="img" + tag + ".yaml"
+                fileNotFound=True
+                for channel in ["archive","stable","fast"]:
+                    if os.path.isfile("clusterImageSets/" + channel + "/" + version + "/" + fileName):
+                        fileNotFound=False
+                if fileNotFound:
                     imgName=tag.replace("_","-")
-                    yaml= open(fileName,"w+")
-                    yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
+                    yaml= open("clusterImageSets/fast/" + version + "/" + fileName,"w+")
+                    yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\n    labels:\n      channel: fast\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
                     yaml.close()
                     print(" Created clusterImageSet")
                 else:

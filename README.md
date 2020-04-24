@@ -13,6 +13,11 @@ This repository provides a subscription that will populate all the latest OpenSh
 oc apply -k subscription/
 ```
 - After about 60s the Create Cluster user interface will list all available OpenShift 4.4 images
+### Fast images
+- To include `fast` channel images add the subscription-fast.yaml
+```
+oc apply -f subscription/subscription-fast.yaml
+```
 
 ## ONLINE - custom curated
 - Fork this repository
