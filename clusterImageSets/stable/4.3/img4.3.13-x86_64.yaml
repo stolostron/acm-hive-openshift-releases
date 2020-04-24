@@ -2,6 +2,8 @@
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
-    name: img4.3.13-stable
+    name: img4.3.13-x86-64
+    labels:
+      channel: stable
 spec:
     releaseImage: quay.io/openshift-release-dev/ocp-release:4.3.13-x86_64
