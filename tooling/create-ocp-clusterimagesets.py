@@ -22,7 +22,7 @@ for version in ["4.3", "4.4"]:
                     if os.path.isfile("clusterImageSets/" + channel + "/" + version + "/" + fileName):
                         fileNotFound=False
                 if fileNotFound:
-                    imgName=tag.replace("_","-")
+                    imgName=tag.replace("x86_64","fast")
                     yaml= open("clusterImageSets/fast/" + version + "/" + fileName,"w+")
                     yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\n    labels:\n      channel: fast\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
                     yaml.close()
