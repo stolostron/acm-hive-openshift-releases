@@ -2,7 +2,7 @@
 #git checkout -b $GH_BRANCH
 git status
 git add .
-git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
+git commit --message "clusterImageSets updated. Travis build: $TRAVIS_BUILD_NUMBER"
 
 echo "Creating remote"
 git remote add acm-hive-ocp-releases https://${GH_TOKEN}@github.com/open-cluster-management/acm-hive-openshift-releases.git > /dev/null 2>&1
