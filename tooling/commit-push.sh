@@ -1,7 +1,7 @@
 #!/bin/bash
 #git checkout -b $GH_BRANCH
 git status
-git add ./clusterImageSets *
+git add clusterImageSets/*
 git commit --message "clusterImageSets updated. Travis build: $TRAVIS_BUILD_NUMBER"
 
 echo "Creating remote"
