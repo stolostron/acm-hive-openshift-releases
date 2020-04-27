@@ -1,0 +1,12 @@
+language: python
+
+jobs:
+  include:
+    - stage: sync-images
+      script: make sync-images-job
+    - stage: promote-stable
+      script: make promote-stable-job
+
+stages:
+  - sync-images
+  - promote-stable
