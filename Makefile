@@ -1,4 +1,4 @@
-update-images:
+update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
 
 setup-env:
