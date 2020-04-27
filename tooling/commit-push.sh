@@ -1,5 +1,5 @@
 #!/bin/bash
-#git checkout -b $GH_BRANCH
+git checkout master
 git status
 git add clusterImageSets/*
 git commit --message "clusterImageSets updated. Travis build: $TRAVIS_BUILD_NUMBER"
