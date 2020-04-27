@@ -1,10 +1,15 @@
 # Author: jnpacker
 
 import requests
+import os
 import os.path
 
 # To support new versions, add them to this array
 for version in ["4.3", "4.4"]:
+    print(" Checking for release images: " + version + ".x")
+    if not os.path.isdir("clusterImageSets/fast/" + version):
+        print(" Create directory: clusterImageSets/fast/" + version)
+        os.mkdir("clusterImageSets/fast/" + version)
     resp = requests.get('https://quay.io/api/v1/repository/openshift-release-dev/ocp-release/image/')
     if resp.status_code != 200:
         # There was a problem
