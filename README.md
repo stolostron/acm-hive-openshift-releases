@@ -8,7 +8,7 @@ This repository will provide
 
 See the next section on curating automatic updates
 
-## ONLINE - latest stable images
+## Latest stable images (ONLINE)
 - Populates the 2x latest OpenShift stable release images
 - Run the following command
 ```bash
@@ -25,14 +25,15 @@ oc apply -f subscription/subscription-fast.yaml
 ### Continuous updates
 - This repository periodically updates as new fast and stable channel release images are minted
 - Changes in this repository will be applied to your subscribed cluster
+- This is the stable channel list being followed by this repository, [link](https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml)
 
-## Uninstall
+### Uninstall
 ```
 oc delete -f subscription/subscription-fast.yaml  #If your using the fast channel
 oc delete -k subscription/
 ```
 
-## ONLINE - custom curated
+## Custom curated (ONLINE)
 - Fork this repository
 - Update the the `./subscription/channel.yaml` file, changing `open-cluster-management` organization name to your `organization name` or `github name` for the forked repository.
 ```yaml
