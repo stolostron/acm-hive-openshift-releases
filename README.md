@@ -33,6 +33,20 @@ oc delete -f subscription/subscription-fast.yaml  #If your using the fast channe
 oc delete -k subscription/
 ```
 
+### Tested STABLE CHANNEL OpenShift install images - Latest
+|         |4.3.0|4.3.5|4.3.10|4.3.11|4.3.12|4.3.13|
+|:-------:|:---:|:---:|:----:|:----:|:----:|:----:|
+| AWS     |  X  |  X  |   X  |   X  |   X  |   X  |
+| GCP     |  X  |  X  |   X  |   X  |   X  |   X  |
+| Azure   |  X  |  X  |   X  |   X  |   X  |   X  |
+
+### Tested FAST CHANNEL OpenShift install images
+|         |4.4.0-rc13|
+|:-------:|:--------:|
+| AWS     |     X    |
+| GCP     |     X    |
+| Azure   |     X    |
+
 ## Custom curated (ONLINE)
 - Fork this repository
 - Update the the `./subscription/channel.yaml` file, changing `open-cluster-management` organization name to your `organization name` or `github name` for the forked repository.
