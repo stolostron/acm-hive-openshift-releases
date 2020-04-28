@@ -22,7 +22,7 @@ oc apply -k subscription/
 oc apply -f subscription/subscription-fast.yaml
 ```
 
-### Continued updates
+### Continuous updates
 - This repository periodically updates as new fast and stable channel release images are minted
 - Changes in this repository will be applied to your subscribed cluster
 
@@ -34,13 +34,13 @@ oc delete -k subscription/
 
 ## ONLINE - custom curated
 - Fork this repository
-- Update the the `./subscription/channel.yaml` file, changing `open-cluster-management` organization name to your `name` or `organization` for the forked repository.
+- Update the the `./subscription/channel.yaml` file, changing `open-cluster-management` organization name to your `organization name` or `github name` for the forked repository.
 ```yaml
 spec:
   type: GitHub
   pathname: https://github.com/NAME_or_ORGANIZATION/acm-hive-openshift-versions.git
 ```
-- Place the YAML files for the images you want to appear in the Red Hat Advanced Cluster Management console under `./clusterImageSets/stable/4.3` or `./clusterImageSets/fast/4.4`
+- Place the YAML files for the images you want to appear in the Red Hat Advanced Cluster Management console under `./clusterImageSets/stable/*` or `./clusterImageSets/fast/*`
 - Commit and push your changes to the forked repository
 - Run the following command
 ```bash
@@ -48,19 +48,18 @@ oc apply -k subscription/   #Stable channel
 oc apply -f subscription/subscription-fast.yaml   #Fast channel
 ```
 - After about 60s the Create Cluster user interface will list the new images available in your forked repository
-- Add new OpenShift install images by created additional files in the `4.3` and `4.4` directories
+- Add new OpenShift install images by created additional files in the `clusterImageSets/stable/*` and `clusterImageSets/fast` directories
 
 ## How to get new versions
-- This repository will automatically update with the latest stable versions
-- You can monitor this repository and merge changes if you forked it
+- This repository will automatically update with the latest stable and fast versions
+- You can monitor this repository and merge changes to your forked repository
 - As soon as new images are committed to this repository and merged to your fork, they will become available in the Red Hat Advanced Cluster Management console (about 60s)
-- This is the stable stream: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml
-
+- This is the stable stream being followed by this repository: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml
 
 ## (Technical Preview) Usecase - OFFLINE - limited images
 - Copy the `clusterImageSets` directory to a system that has access to the disconnected Red Hat Advanced Cluster Management Hub
 - Delete the YAML files for OpenShift versions you do not want to host OFFLINE
-- Modify the `clusterImageSet` YAML files for the remaining OpenShift release images to point to the correct OFFLINE repository
+- Modify the `clusterImageSet` YAML files for the remaining OpenShift release images to point to the correct `OFFLINE` repository
 ```yaml
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
@@ -72,7 +71,7 @@ spec:
 - Make sure the images are loaded in the OFFLINE image registry referenced in the YAML
 - Apply a subset of the YAML files
 ```bash
-oc apply -f clusterImageSets/
+oc apply -f clusterImageSets/FILE_NAME.yaml
 ```
 - The Create Cluster user interface will list only the images available from the `cluseterImageSets` directory
 
@@ -94,4 +93,5 @@ oc apply -f clusterImageSets/
 - Create the secret
 ```bash
 oc apply -f subscription/secret.yaml
+oc apply -k subscription/
 ``
