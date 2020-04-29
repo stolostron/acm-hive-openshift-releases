@@ -1,5 +1,6 @@
 update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
+	python3 tooling/promote-stable-clusterimagesets.py
 
 setup-env:
 	tooling/setup-env.sh

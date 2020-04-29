@@ -5,7 +5,8 @@ import os
 import os.path
 
 # To support new versions, add them to this array
-for version in ["4.3", "4.4"]:
+VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
+for version in VERSIONS:
     print(" Checking for release images: " + version + ".x")
     if not os.path.isdir("clusterImageSets/fast/" + version):
         print(" Create directory: clusterImageSets/fast/" + version)
@@ -13,7 +14,7 @@ for version in ["4.3", "4.4"]:
     resp = requests.get('https://quay.io/api/v1/repository/openshift-release-dev/ocp-release/image/')
     if resp.status_code != 200:
         # There was a problem
-        raise ApiError('GET /api/v1/ {}'.format(resp.status_code))
+        raise ValueError('GET /api/v1/ {}'.format(resp.status_code))
     # Loop through all images found in quay.io
     for image in resp.json()['images']:
         if (image['tags'] != []):
