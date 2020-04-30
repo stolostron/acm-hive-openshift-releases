@@ -80,7 +80,7 @@ oc apply -f clusterImageSets/FILE_NAME.yaml
 - Uncomment the secret reference in `subscription/channel.yaml`
 - Create a `subscription/secret.yaml` file with the following contents
 ```yaml
----
+  ---
   apiVersion: v1
   kind: Secret
   metadata:
