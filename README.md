@@ -2,11 +2,11 @@
 This repository provides a subscription that will populate all the latest OpenShift images into Advanced Cluster Management for OpenShift deployments.
 
 # Repository layout
-This repository will provide
-1. The two latest `stable` channel images via the default subscription. All older `clusterImageSets` are in `clusterImageSets/archive`
-2. The two latest `fast` channel images via via the `subscription-fast.yaml`.
+- `stable` : The latest stable OpenShift releases                        `./clusterImageSets/stable/*`
+- `fast`   : The fast channel OpenShift releases                         `./clusterImageSets/fast/*`
+- `archive`: The older Openshift releases for `stable` & `fast` channels `./clusterImageSets/archive/*`
 
-See the next section on curating automatic updates
+See the `Custom curated` section on controlling your own OpenShift release timelines with Advanced Cluster Management
 
 ## Latest stable images (ONLINE)
 - Populates the 2x latest OpenShift stable release images
