@@ -95,4 +95,4 @@ oc apply -f clusterImageSets/FILE_NAME.yaml
 ```bash
 oc apply -f subscription/secret.yaml
 oc apply -k subscription/
-``
+```
