@@ -37,11 +37,12 @@ for version in VERSIONS:
                     yaml= open("clusterImageSets/fast/" + version + "/" + fileName,"w+")
                     yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\n    labels:\n      channel: fast\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
                     yaml.close()
-                    print(" Created clusterImageSet")
+                    print(" Created clusterImageSet", end='')
                     
-                    slack_data = {'text': "*NEW* `fast` channel image\nOpenShift Release " + imgName + "has been published"}
+                    slack_data = {'text': "*NEW* `fast` channel image\nOpenShift Release `" + imgName + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/fast/"+version+"|link>\nFYI: <@UTVUP5ESV> <@UUC0MMXTP>"}
                     response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
                     if response.status_code != 200:
                         raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
+                    print(" (Slack msg sent!)")
                 else:
                     print(" Skipped, already exists")
