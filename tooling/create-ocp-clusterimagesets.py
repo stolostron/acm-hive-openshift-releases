@@ -39,8 +39,8 @@ for version in VERSIONS:
                     yaml.close()
                     print(" Created clusterImageSet")
                     
-                    slack_data = {'text': "*NEW* `fast` channel image\nOpenShift Release " + imgName + "has been published", 'channel': "#forum-acm-cluster-lifecycle" }
-                    response = requests.post(SLACK_WEBHOOK, data=slack_data, headers={'Content-Type': 'application/json'})
+                    slack_data = {'text': "*NEW* `fast` channel image\nOpenShift Release " + imgName + "has been published"}
+                    response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
                     if response.status_code != 200:
                         raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
                 else:
