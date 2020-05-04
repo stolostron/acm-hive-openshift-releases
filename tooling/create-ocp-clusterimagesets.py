@@ -23,7 +23,7 @@ for version in VERSIONS:
     for image in resp.json()['images']:
         if (image['tags'] != []):
             tag=image['tags'][0]  # There is only one tag for now in each image
-            if ("x86_64" in tag and version in tag):
+            if ("x86_64" in tag and version+"." in tag):
                 print('Checking tag: {}'.format(tag), end='')
 
                 # Check if we already have the file in the primary or archive
