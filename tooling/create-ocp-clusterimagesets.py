@@ -26,10 +26,10 @@ for version in VERSIONS:
             if ("x86_64" in tag and version+"." in tag):
                 print('Checking tag: {}'.format(tag), end='')
 
-                # Check if we already have the file in the primary or archive
+                # Check if we already have the file in the stable, fast or candidate channel
                 fileName="img" + tag + ".yaml"
                 fileNotFound=True
-                for channel in ["archive","stable","fast"]:
+                for channel in ["candidate","stable","fast"]:
                     if os.path.isfile("clusterImageSets/" + channel + "/" + version + "/" + fileName):
                         fileNotFound=False
                 if fileNotFound:
