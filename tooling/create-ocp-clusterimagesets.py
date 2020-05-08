@@ -47,5 +47,7 @@ for version in VERSIONS:
                         if response.status_code != 200:
                             raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
                         print(" (Slack msg sent!)")
+                    else:
+                        print(" (Slack not configured)")
                 else:
                     print(" Skipped, already exists")
