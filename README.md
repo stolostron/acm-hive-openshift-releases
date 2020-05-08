@@ -55,6 +55,7 @@ oc apply -f subscription/subscription-fast.yaml   #Fast channel
 - This repository will automatically update with the latest stable and fast versions
 - You can monitor this repository and merge changes to your forked repository
 - As soon as new images are committed to this repository and merged to your fork, they will become available in the Red Hat Advanced Cluster Management console (about 60s)
+- This is the install image repository being used: https://quay.io/repository/openshift-release-dev/ocp-release?tab=tags
 - This is the stable stream being followed by this repository: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml
 
 ## (Technical Preview) Usecase - OFFLINE - limited images

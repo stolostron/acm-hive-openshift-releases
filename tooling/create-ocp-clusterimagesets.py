@@ -26,24 +26,26 @@ for version in VERSIONS:
             if ("x86_64" in tag and version+"." in tag):
                 print('Checking tag: {}'.format(tag), end='')
 
-                # Check if we already have the file in the stable, fast or candidate channel
+                # Check if we already have the file in the stable, fast or releases channel
                 fileName="img" + tag + ".yaml"
                 fileNotFound=True
-                for channel in ["candidate","stable","fast"]:
-                    if os.path.isfile("clusterImageSets/" + channel + "/" + version + "/" + fileName):
-                        fileNotFound=False
-                if fileNotFound:
+                #for channel in ["releases","stable","fast"]:
+                #    if os.path.isfile("clusterImageSets/" + channel + "/" + version + "/" + fileName):
+                #        fileNotFound=False
+                #if fileNotFound:
+                if not os.path.isfile("clusterImageSets/releases/" + version + "/" + fileName):
                     #imgName=tag.replace("x86_64","fast")
                     imgName=tag.replace("_","-")
-                    yaml= open("clusterImageSets/fast/" + version + "/" + fileName,"w+")
-                    yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\n    labels:\n      channel: fast\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
+                    yaml= open("clusterImageSets/releases/" + version + "/" + fileName,"w+")
+                    yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\n    labels:\n      channel: candidate\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
                     yaml.close()
-                    print(" Created clusterImageSet", end='')
+                    print(" Created clusterImageSet")
                     
-                    slack_data = {'text': "*NEW* `fast` channel *ClusterImageSet*\nOpenShift Release `" + imgName + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/fast/"+version+"|link>\nFYI: "+SLACK_FYI}
-                    response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
-                    if response.status_code != 200:
-                        raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
-                    print(" (Slack msg sent!)")
+                    if SLACK_WEBHOOK:
+                        slack_data = {'text': "*NEW* *ClusterImageSet* found\nOpenShift Release `" + imgName + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/releases/"+version+"|link>\nFYI: "+SLACK_FYI}
+                        response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
+                        if response.status_code != 200:
+                            raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
+                        print(" (Slack msg sent!)")
                 else:
                     print(" Skipped, already exists")
