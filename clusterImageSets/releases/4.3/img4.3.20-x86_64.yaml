@@ -1,0 +1,9 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+    name: img4.3.20-x86-64
+    labels:
+      channel: candidate
+spec:
+    releaseImage: quay.io/openshift-release-dev/ocp-release:4.3.20-x86_64
