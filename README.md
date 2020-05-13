@@ -22,6 +22,19 @@ oc apply -k subscription/
 oc apply -f subscription/subscription-fast.yaml
 ```
 
+### How to pause the channels
+#### Prerequisites
+1. The fast channel subscription has been applied
+2. Logged into the ACM hub
+#### Pause the Fast Channel subscription
+```
+oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
+```
+#### Unpause the Fast Channel subscription
+```
+oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
+```
+
 ### Continuous updates
 - This repository periodically updates as new fast and stable channel release images are minted
 - Changes in this repository will be applied to your subscribed cluster

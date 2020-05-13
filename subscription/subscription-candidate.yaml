@@ -6,7 +6,7 @@ metadata:
   labels:
     subscription-pause: "false"
   annotations:
-    apps.open-cluster-management.io/github-path: clusterImageSets
+    apps.open-cluster-management.io/github-path: clusterImageSets/releases/4.3
     apps.open-cluster-management.io/github-branch: master
 spec:
   channel: ocp-clusterimagesets/openshift-release-dev-images
