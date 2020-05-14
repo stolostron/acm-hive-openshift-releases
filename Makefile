@@ -26,6 +26,9 @@ subscribe-stable: verify-oc-cli
 subscribe-fast: verify-oc-cli subscribe-stable
 	oc apply -f subscription/subscription-fast.yaml
 
+subscribe-candidate: verify-oc-cli subscribe-stable
+	oc apply -f subscription/subscription-candidate.yaml
+
 unsubscribe: verify-oc-cli
 	oc delete -f subscription/subscription-fast.yaml --ignore-not-found
 	oc delete -k subscription/ || true
