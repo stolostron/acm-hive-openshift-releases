@@ -2,7 +2,7 @@ resources:
 - namespace.yaml
 #- secret.yaml
 - channel.yaml
-- subscription.yaml
+- subscription-stable.yaml
 
 #patchesStrategicMerge:
 #- patch-timewindow.yaml
