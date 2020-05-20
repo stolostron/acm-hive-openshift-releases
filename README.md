@@ -1,25 +1,28 @@
 # OpenShift Release Images
-This repository provides a subscription that will populate all the latest OpenShift images into Advanced Cluster Management for OpenShift deployments.
+This repository provides a subscription that will populate all the latest OpenShift images into Advanced Cluster Management for OpenShift deployments. More information about OpenShift release images and the channels mentioned below can be found here: https://docs.openshift.com/container-platform/4.4/updating/updating-cluster-between-minor.html#understanding-upgrade-channels_updating-cluster-between-minor
 
 # Repository layout
-- `stable` : The latest stable OpenShift releases                        `./clusterImageSets/stable/*`
-- `fast`   : The fast channel OpenShift releases                         `./clusterImageSets/fast/*`
-- `archive`: The older Openshift releases for `stable` & `fast` channels `./clusterImageSets/archive/*`
+- `fast` `./clusterImageSets/fast/*` : The fast channel OpenShift releases, generally available and fully supported
+- `stable` `./clusterImageSets/stable/*` : The latest stable OpenShift releases, same as fast, but with connected customer feedback
+- `candidate` `./clusterImageSets/releases/*` : All release images are in this folder, those labelled `candidate` releases are not supported
 
 See the `Custom curated` section on controlling your own OpenShift release timelines with Advanced Cluster Management
 
-## Latest stable images (ONLINE)
-- Populates the 2x latest OpenShift stable release images
+## Latest supported images (ONLINE)
+- Populates the 2x latest OpenShift fast release images
 - Run the following command
 ```bash
 # Connect to you Red hat Advanced Cluster Management hub
 oc apply -k subscription/
 ```
-- After about 60s the Create Cluster console will list the latest available OpenShift 4.4 stable images
-### Fast channel images
-- To include `fast` channel images activate the subscription-fast.yaml
-```
-oc apply -f subscription/subscription-fast.yaml
+- After about 60s the Create Cluster console will list the latest supported OpenShift images
+### Stable channel images
+- To include `stable` channel images activate the subscription-stable.yaml
+```bash
+oc apply -f subscription/subscription-stable.yaml
+
+# Remove the fast channel subscription if you no longer want those release images
+oc -n hive delete appsub openshift-release-fast-images
 ```
 
 ### How to pause the channels
@@ -42,7 +45,7 @@ oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"
 
 ### Uninstall
 ```
-oc delete -f subscription/subscription-fast.yaml  #If your using the fast channel
+oc delete -f subscription/subscription-stable.yaml  #If your using the stable channel
 oc delete -k subscription/
 ```
 
@@ -58,18 +61,18 @@ spec:
 - Commit and push your changes to the forked repository
 - Run the following command
 ```bash
-oc apply -k subscription/   #Stable channel
-oc apply -f subscription/subscription-fast.yaml   #Fast channel
+oc apply -k subscription/   #fast channel
+oc apply -f subscription/subscription-stable.yaml   #stable channel
 ```
 - After about 60s the Create Cluster user interface will list the new images available in your forked repository
-- Add new OpenShift install images by created additional files in the `clusterImageSets/stable/*` and `clusterImageSets/fast` directories
+- Add new OpenShift install images by created additional files in the `clusterImageSets/stable/*` and `clusterImageSets/fast/*` directories
 
 ## How to get new versions
 - This repository will automatically update with the latest stable and fast versions
 - You can monitor this repository and merge changes to your forked repository
 - As soon as new images are committed to this repository and merged to your fork, they will become available in the Red Hat Advanced Cluster Management console (about 60s)
 - This is the install image repository being used: https://quay.io/repository/openshift-release-dev/ocp-release?tab=tags
-- This is the stable stream being followed by this repository: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml
+- These are the streams being followed by this repository: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/
 
 ## (Technical Preview) Usecase - OFFLINE - limited images
 - Copy the `clusterImageSets` directory to a system that has access to the disconnected Red Hat Advanced Cluster Management Hub
