@@ -21,7 +21,7 @@ setup-env:
 commit-push:
 	tooling/commit-push.sh
 
-sync-images-job: setup-env update-images commit-push
+sync-images-job: update-images commit-push
 	echo "DONE!"
 
 subscribe-stable: verify-oc-cli subscribe-stable

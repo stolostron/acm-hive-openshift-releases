@@ -44,9 +44,13 @@ for version in VERSIONS:
             print(" (Labelled as " + channel + " channel)", end='')
           
           # Place the YAML into the correct channel
-          channelPath="clusterImageSets/" + channel + "/" + version + "/img"+imageTag+"-x86_64.yaml"
-          if i >= len(images['versions'])-1 and not os.path.isfile(channelPath):
-            with open(channelPath, 'w') as fileOut:
+          channelPath = "clusterImageSets/" + channel + "/" + version + "/"
+          channelImage = channelPath + "img"+imageTag+"-x86_64.yaml"
+          if i >= len(images['versions'])-1 and not os.path.isfile(channelImage):
+            # Deal with a scenario that the directory does not exist
+            if not os.path.isdir(channelPath):
+              os.mkdir(channelPath)
+            with open(channelImage, 'w') as fileOut:
               yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
             print(" Published to " + channel + " channel")
           else:
