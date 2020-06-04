@@ -2,7 +2,7 @@
 echo "Configure global user information:"
 
 if [ "$TRAVIS" == "true" ]; then
-    git config --global user.email "jpacker@redhat.com"
+    git config --global user.email "$BOT_EMAIL"
     git config --global user.name "BOT-RHACM Hive Open Shift releases"
 fi
 
