@@ -11,8 +11,9 @@ VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
 for version in VERSIONS:
     print(" Checking for release images: " + version + ".x")
     if not os.path.isdir("clusterImageSets/releases/" + version):
-        print(" Create directory: clusterImageSets/releases/" + version)
-        os.mkdir("clusterImageSets/releases/" + version)
+        newDir = "clusterImageSets/releases/" + version
+        print(" Create directory: " + newDir)
+        os.mkdir(newDir)
     
     resp = requests.get('https://quay.io/api/v1/repository/openshift-release-dev/ocp-release/image/')
     if resp.status_code != 200:
