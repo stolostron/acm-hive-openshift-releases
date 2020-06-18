@@ -5,6 +5,8 @@ import yaml
 import os
 import os.path
 
+SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK")
+SLACK_FYI =  os.environ.get("SLACK_FYI")
 VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
 CHANNELS = ["stable", "fast"]
 for version in VERSIONS:
@@ -54,6 +56,14 @@ for version in VERSIONS:
             with open(channelImage, 'w') as fileOut:
               yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
             print(" Published to " + channel + " channel")
+            if SLACK_WEBHOOK:
+                slack_data = {'text': "*NEW* *ClusterImageSet* promoted\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
+                response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
+                if response.status_code != 200:
+                    raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
+                print(" (Slack msg sent!)")
+            else:
+                print(" (Slack not configured)")
           else:
             print(" (SKIPPED)")
 

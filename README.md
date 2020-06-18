@@ -113,3 +113,10 @@ oc apply -f clusterImageSets/FILE_NAME.yaml
 oc apply -f subscription/secret.yaml
 oc apply -k subscription/
 ```
+
+# Support a new OpenShift version via Travis
+Update the Travis variable: `LIST_VERSIONS`
+Make sure to enclose the space separated version numbers with quotes.
+```
+LIST_VERSIONS = "4.3 4.4 4.5"
+```
