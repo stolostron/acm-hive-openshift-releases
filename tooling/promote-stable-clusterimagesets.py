@@ -8,7 +8,7 @@ import os.path
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK")
 SLACK_FYI =  os.environ.get("SLACK_FYI")
 VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
-CHANNELS = ["stable", "fast"]
+CHANNELS = ["fast", "stable"]
 for version in VERSIONS:
   for channel in CHANNELS:
     channelUrl="https://raw.githubusercontent.com/openshift/cincinnati-graph-data/master/channels/" + channel + "-" + version + ".yaml"
@@ -18,16 +18,14 @@ for version in VERSIONS:
       # There was a problem
       raise ValueError('GET ' + channelUrl + ' {}'.format(resp.status_code))
 
-    # Obtain the stable channel YAML file from the Cincinnati repository in github
+    # Obtain the channel YAML file from the Cincinnati repository in github
     images = yaml.load(resp.text, Loader=yaml.SafeLoader)
     foundVersion = False
-    i = 0
     for imageTag in images['versions']:
-      i = i + 1
       # Check an make sure the tag matches the version we're working on
       if imageTag.startswith(version):
         foundVersion = True
-        print("  Looking for stable release image: " + imageTag, end='')
+        print("  Looking for "+ channel + " release image: " + imageTag, end='')
         
         # Change the channel label is found
         filePath="clusterImageSets/releases/" + version + "/img"+imageTag+"-x86_64.yaml"
@@ -43,27 +41,27 @@ for version in VERSIONS:
             fastClusterImageSet['metadata']['labels']['channel'] = channel
             with open(filePath, 'w') as fileOut:
               yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False)
-            print(" (Labelled as " + channel + " channel)", end='')
-          
-          # Place the YAML into the correct channel
-          channelPath = "clusterImageSets/" + channel + "/" + version + "/"
-          channelImage = channelPath + "img"+imageTag+"-x86_64.yaml"
-          if i >= len(images['versions'])-1 and not os.path.isfile(channelImage):
-            # Deal with a scenario that the directory does not exist
-            if not os.path.isdir(channelPath):
-              print("Create directory: " + channelPath)
-              os.mkdir(channelPath)
-            with open(channelImage, 'w') as fileOut:
-              yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
-            print(" Published to " + channel + " channel")
-            if SLACK_WEBHOOK:
-                slack_data = {'text': "*NEW* *ClusterImageSet* promoted\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
-                response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
-                if response.status_code != 200:
-                    raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
-                print(" (Slack msg sent!)")
-            else:
-                print(" (Slack not configured)")
+            print(" (Channel changed)", end='')
+
+            # Place the YAML into the correct channel
+            channelPath = "clusterImageSets/" + channel + "/" + version + "/"
+            channelImage = channelPath + "img"+imageTag+"-x86_64.yaml"
+            if not os.path.isfile(channelImage):
+              # Deal with a scenario that the directory does not exist
+              if not os.path.isdir(channelPath):
+                print(" (Create directory: " + channelPath + ")", end='')
+                os.mkdir(channelPath)
+              with open(channelImage, 'w') as fileOut:
+                yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
+              print(" (Published to " + channel + " channel)", end='')
+              if SLACK_WEBHOOK:
+                  slack_data = {'text': "*NEW* *ClusterImageSet* promoted to "+channel+" channel\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
+                  response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
+                  if response.status_code != 200:
+                      raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
+                  print(" (Slack msg sent!)")
+              else:
+                  print(" (Slack not configured)")
           else:
             print(" (SKIPPED)")
 

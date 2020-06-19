@@ -3,6 +3,10 @@ kind: ClusterImageSet
 metadata:
   labels:
     channel: stable
+    platform.aws: 'true'
+    platform.azure: 'false'
+    platform.gcp: 'true'
+    visible: 'true'
   name: img4.3.23-x86-64
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.3.23-x86_64

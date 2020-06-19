@@ -36,7 +36,19 @@ for version in VERSIONS:
                     #imgName=tag.replace("x86_64","fast")
                     imgName=tag.replace("_","-")
                     yaml= open("clusterImageSets/releases/" + version + "/" + fileName,"w+")
-                    yaml.write("---\napiVersion: hive.openshift.io/v1\nkind: ClusterImageSet\nmetadata:\n    name: img" + imgName + "\n    labels:\n      channel: candidate\nspec:\n    releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
+                    cisr = ("---\n" +
+                            "apiVersion: hive.openshift.io/v1\n"
+                            "kind: ClusterImageSet\nmetadata:\n"
+                            "  name: img" + imgName + "\n"
+                            "  labels:\n"
+                            "    channel: candidate\n"
+                            "    platform.aws: \"true\"\n"
+                            "    platform.gcp: \"true\"\n"
+                            "    platform.azure: \"true\"\n"
+                            "    visible: \"true\"\n"
+                            "spec:\n"
+                            "  releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
+                    yaml.write(cisr)
                     yaml.close()
                     print(" Created clusterImageSet")
                 else:
