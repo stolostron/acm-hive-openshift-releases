@@ -55,7 +55,7 @@ for version in VERSIONS:
                 yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
               print(" (Published to " + channel + " channel)", end='')
               if SLACK_WEBHOOK:
-                  slack_data = {'text': "*NEW* *ClusterImageSet* promoted to "+channel+" channel\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
+                  slack_data = {'text': "*NEW* *ClusterImageSet* promoted to `"+channel+"` channel\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
                   response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
                   if response.status_code != 200:
                       raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
