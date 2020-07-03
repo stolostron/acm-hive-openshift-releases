@@ -1,0 +1,13 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+  name: img4.5.0-rc.6-x86-64
+  labels:
+    channel: candidate
+    platform.aws: "true"
+    platform.gcp: "true"
+    platform.azure: "true"
+    visible: "true"
+spec:
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.5.0-rc.6-x86_64
