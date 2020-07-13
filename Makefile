@@ -24,15 +24,16 @@ commit-push:
 sync-images-job: update-images commit-push
 	echo "DONE!"
 
-subscribe-stable: verify-oc-cli subscribe-stable
+subscribe-stable: verify-oc-cli subscribe-fast
 	oc apply -f subscription/subscription-stable.yaml
 	oc delete -f subscription/subscription-fast.yaml --ignore-not-found
 	oc delete -f subscription/subscription-candidate.yaml --ignore-not-found
 
 subscribe-fast: verify-oc-cli
+	oc projects | grep ocp-clusterimagesets || oc new-project ocp-clusterimagesets
 	oc apply -k subscription
 
-subscribe-candidate: verify-oc-cli subscribe-stable
+subscribe-candidate: verify-oc-cli subscribe-fast
 	oc apply -f subscription/subscription-candidate.yaml
 	oc -n hive delete appsub openshift-release-fast-images --ignore-not-found
 	oc -n hive delete appsub openshift-release-stable-images --ignore-not-found

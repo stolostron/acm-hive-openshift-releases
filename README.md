@@ -13,6 +13,7 @@ See the `Custom curated` section on controlling your own OpenShift release timel
 - Run the following command
 ```bash
 # Connect to you Red hat Advanced Cluster Management hub
+# On OpenShift Dedicated, run "oc new-project ocp-clusterimagesets"
 oc apply -k subscription/
 ```
 - After about 60s the Create Cluster console will list the latest supported OpenShift images
@@ -23,6 +24,14 @@ oc apply -f subscription/subscription-stable.yaml
 
 # Remove the fast channel subscription if you no longer want those release images
 oc -n hive delete appsub openshift-release-fast-images
+```
+### Alternate Make commands
+```
+# Connect to you Red hat Advanced Cluster Management hub
+make subscribe-fast
+
+# OR Stable
+make subscribe-stable
 ```
 
 ### How to pause the channels
