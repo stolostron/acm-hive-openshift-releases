@@ -42,3 +42,15 @@ unsubscribe-all: verify-oc-cli
 	oc delete -f subscription/subscription-stable.yaml --ignore-not-found
 	oc delete -f subscription/subscription-candidate.yaml --ignore-not-found
 	oc delete -k subscription/ || true
+
+pause-fast:
+	oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
+
+unpause-fast:
+	oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
+
+pause-stable:
+	oc -n hive patch appsub openshift-release-stable-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
+
+unpause-stable:
+	oc -n hive patch appsub openshift-release-stable-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'

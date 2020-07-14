@@ -39,13 +39,20 @@ make subscribe-stable
 1. The fast channel subscription has been applied
 2. Logged into the ACM hub
 #### Pause the Fast Channel subscription
-```
+```bash
 oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
+
+# Alternate
+make pause-fast
 ```
 #### Unpause the Fast Channel subscription
-```
+```bash
 oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
+
+# Alternate
+make unpause-fast
 ```
+_Note: `*-stable` is also supported._
 
 ### Continuous updates
 - This repository periodically updates as new fast and stable channel release images are minted
