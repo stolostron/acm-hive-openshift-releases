@@ -2,7 +2,7 @@ apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   labels:
-    channel: stable
+    channel: fast
     platform.aws: 'true'
     platform.azure: 'true'
     platform.gcp: 'true'
