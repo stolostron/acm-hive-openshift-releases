@@ -1,0 +1,96 @@
+## Customizations
+
+# The following can be fixed in the template
+# - TEMPLATE_REGION          : Which aws region to use (2x instances)
+# - TEMPLATE_CLUSTERIMAGESET : Which OCP image to deploy (1x instance)
+
+# Dynamic variable that must be changed
+# - TEMPLATE_NAME : The name assigned to your cluster (3x instances)
+
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: TEMPLATE_NAME
+  namespace: TEMPLATE_NAME
+  labels:
+    cloud: 'AWS'
+    region: 'TEMPLATE_REGION'
+    vendor: 'OpenShift'
+spec:
+  baseDomain: BASEDOMAIN
+  clusterName: TEMPLATE_NAME
+  controlPlaneConfig:
+    servingCertificates: {}
+  installed: false
+  platform:
+    aws:
+      credentialsSecretRef:
+        name: SECRET_NAME-aws-creds
+      region: TEMPLATE_REGION
+  provisioning:
+    installConfigSecretRef:
+      name: SECRET_NAME-install-config
+    sshPrivateKeySecretRef:
+      name: SECRET_NAME-ssh-private-key
+    imageSetRef:
+       #quay.io/openshift-release-dev/ocp-release:4.4.4-x86_64
+      name: TEMPLATE_CLUSTERIMAGESET
+  pullSecretRef:
+    name: SECRET_NAME-pull-secret
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  labels:
+    cloud: auto-detect
+    name: TEMPLATE_NAME
+    environment: 'dev'
+    vendor: auto-detect
+  name: TEMPLATE_NAME
+spec:
+  hubAcceptsClient: true
+---
+apiVersion: hive.openshift.io/v1
+kind: MachinePool
+metadata:
+  name: TEMPLATE_NAME-worker
+  namespace: TEMPLATE_NAME
+spec:
+  clusterDeploymentRef:
+    name: TEMPLATE_NAME
+  name: worker
+  platform:
+    aws:
+      rootVolume:
+        iops: 100
+        size: 100
+        type: gp2
+      type: m5.large
+  replicas: 3
+---
+apiVersion: agent.open-cluster-management.io/v1
+kind: KlusterletAddonConfig
+metadata:
+  name: TEMPLATE_NAME
+  namespace: TEMPLATE_NAME
+spec:
+  clusterName: TEMPLATE_NAME
+  clusterNamespace: TEMPLATE_NAME
+  clusterLabels:
+    cloud: auto-detect
+    vendor: auto-detect
+  applicationManager:
+    enabled: true
+  policyController:
+    enabled: true
+  searchCollector:
+    enabled: true
+  cisController:
+    enabled: false
+  certPolicyController:
+    enabled: true
+  iamPolicyController:
+    enabled: true
+  version: 2.0.0
+

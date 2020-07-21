@@ -54,6 +54,9 @@ for version in VERSIONS:
               with open(channelImage, 'w') as fileOut:
                 yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
               print(" (Published to " + channel + " channel)", end='')
+              if os.path.isdir("tests/AWS-Template") and channel == "fast":
+                print("export CLUSTER_IMAGE_SET=img"+imageTag+"-x86-64 && export CLUSTER_NAME=aws"+imageTag.replace(".","",1).replace(".","-")+"-jnp && export OVERWRITE=yes && ./tests/scripts/build-cluster-subscribe-secrets.sh")
+                os.system("export CLUSTER_IMAGE_SET=img"+imageTag+"-x86-64 && export CLUSTER_NAME=aws"+imageTag.replace(".","",1).replace(".","-")+"-jnp && export OVERWRITE=yes && ./tests/scripts/build-cluster-subscribe-secrets.sh")
               if SLACK_WEBHOOK:
                   slack_data = {'text': "*NEW* *ClusterImageSet* promoted to `"+channel+"` channel\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
                   response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})

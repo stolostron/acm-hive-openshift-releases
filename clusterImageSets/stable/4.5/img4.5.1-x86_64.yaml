@@ -6,7 +6,7 @@ metadata:
     platform.aws: 'true'
     platform.azure: 'true'
     platform.gcp: 'true'
-    visible: 'true'
+    visible: 'false'
   name: img4.5.1-x86-64
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.5.1-x86_64

@@ -8,6 +8,6 @@ metadata:
     platform.aws: "true"
     platform.gcp: "true"
     platform.azure: "true"
-    visible: "true"
+    visible: "false"
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.5.1-x86_64

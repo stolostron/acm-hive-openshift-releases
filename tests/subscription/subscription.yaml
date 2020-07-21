@@ -1,0 +1,15 @@
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  name: acm-hive-openshift-release-testing
+  namespace: hive
+  annotations:
+    apps.open-cluster-management.io/github-path: tests/deployed
+    apps.open-cluster-management.io/github-branch: master
+  labels:
+    subscription-pause: "false"
+spec:
+  channel: hive-testing/gitops-hive
+  placement:
+   local: true
+
