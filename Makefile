@@ -7,6 +7,8 @@ all:
 	@echo "  _> make subscribe-stable"
 	@echo "  _> make subscribe-candidate"
 	@echo "  _> make unsubscribe-all"
+	@echo "Manual commands:"
+	@echo "  _> make update-images"
 
 verify-oc-cli:
 	oc version | grep " 4.4."
