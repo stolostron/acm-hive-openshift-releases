@@ -55,7 +55,11 @@ for version in VERSIONS:
                 yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
               print(" (Published to " + channel + " channel)", end='')
               if os.path.isdir("hive-cluster-testing/AWS-Template") and channel == "fast":
-                os.system("export CLUSTER_IMAGE_SET=img"+imageTag+"-x86-64 && export CLUSTER_NAME=hive"+version.replace(".","")+"-aws-test && export OVERWRITE=yes && ./hive-cluster-testing/scripts/build-cluster-subscribe-secrets.sh")
+                os.system("export BASEDOMAIN=dev06.red-chesterfield.com && export CLUSTER_TYPE=AWS && export CLUSTER_REGION=us-east-1 && export CLUSTER_IMAGE_SET=img"+imageTag+"-x86-64 && export CLUSTER_NAME=hive"+version.replace(".","")+"-aws-test && export OVERWRITE=no && ./hive-cluster-testing/scripts/build-cluster-subscribe-secrets.sh")
+              if os.path.isdir("hive-cluster-testing/GCP-Template") and channel == "fast":
+                os.system("export BASEDOMAIN=demo.gcp.red-chesterfield.com && export CLUSTER_TYPE=GCP && export CLUSTER_REGION=us-east1 && export CLUSTER_IMAGE_SET=img"+imageTag+"-x86-64 && export CLUSTER_NAME=hive"+version.replace(".","")+"-gcp-test && export OVERWRITE=no && ./hive-cluster-testing/scripts/build-cluster-subscribe-secrets.sh")
+              if os.path.isdir("hive-cluster-testing/Azure-Template") and channel == "fast":
+                os.system("export BASEDOMAIN=dev06.az.red-chesterfield.com && export CLUSTER_TYPE=Azure && export CLUSTER_REGION=centralus && export CLUSTER_IMAGE_SET=img"+imageTag+"-x86-64 && export CLUSTER_NAME=hive"+version.replace(".","")+"-azure-test && export OVERWRITE=no && ./hive-cluster-testing/scripts/build-cluster-subscribe-secrets.sh")
               if SLACK_WEBHOOK:
                   slack_data = {'text': "*NEW* *ClusterImageSet* promoted to `"+channel+"` channel\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
                   response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
