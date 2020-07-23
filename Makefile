@@ -16,7 +16,7 @@ verify-oc-cli:
 update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
 	python3 tooling/promote-stable-clusterimagesets.py
-	#./tooling/gitrepo-commitpush-hive-test.sh
+	./tooling/gitrepo-commitpush-hive-test.sh
 
 setup-env:
 	tooling/setup-env.sh
