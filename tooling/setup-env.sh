@@ -8,4 +8,4 @@ fi
 
 python3 -m pip install requests
 python3 -m pip install pyyaml
-tooling/gitrepo-clone-hive-test.sh
+#tooling/gitrepo-clone-hive-test.sh
