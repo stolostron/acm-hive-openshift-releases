@@ -42,10 +42,7 @@ for version in VERSIONS:
                             "  name: img" + imgName + "\n"
                             "  labels:\n"
                             "    channel: candidate\n"
-                            "    platform.aws: \"true\"\n"
-                            "    platform.gcp: \"true\"\n"
-                            "    platform.azure: \"true\"\n"
-                            "    visible: \"true\"\n"
+                            "    visible: \"false\"\n"
                             "spec:\n"
                             "  releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
                     yaml.write(cisr)

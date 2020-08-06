@@ -39,6 +39,7 @@ for version in VERSIONS:
           # Update the channel
           if fastClusterImageSet['metadata']['labels']['channel'] != channel and fastClusterImageSet['metadata']['labels']['channel'] != "stable" :
             fastClusterImageSet['metadata']['labels']['channel'] = channel
+            fastClusterImageSet['metadata']['labels']['visible'] = "true"
             with open(filePath, 'w') as fileOut:
               yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False)
             print(" (Channel changed)", end='')
