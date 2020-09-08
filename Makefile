@@ -11,7 +11,8 @@ all:
 	@echo "  _> make update-images"
 
 verify-oc-cli:
-	oc version | grep " 4.4."
+	@echo Client Version should be at least 4.4
+	@oc version | grep "Client Version"
 
 update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
