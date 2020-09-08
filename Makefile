@@ -16,7 +16,15 @@ verify-oc-cli:
 update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
 	python3 tooling/promote-stable-clusterimagesets.py
+	make prune-images
 	#./tooling/gitrepo-commitpush-hive-test.sh
+
+prune-images:
+	@echo === Start ClusterImageSet pruning ===
+	python3 tooling/prune.py 1 clusterImageSets/fast
+	@echo
+	python3 tooling/prune.py 2 clusterImageSets/stable
+	@echo === Finished Pruning ===
 
 setup-env:
 	tooling/setup-env.sh
