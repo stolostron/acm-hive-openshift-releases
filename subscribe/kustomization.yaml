@@ -1,6 +1,7 @@
 resources:
 - namespace.yaml
 #- secret.yaml
+- application.yaml
 - channel.yaml
 - subscription-fast.yaml
 

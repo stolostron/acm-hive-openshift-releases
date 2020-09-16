@@ -2,10 +2,10 @@
 apiVersion: apps.open-cluster-management.io/v1
 kind: Channel
 metadata:
-  name: openshift-release-dev-images
-  namespace: ocp-clusterimagesets
+  name: hive-clusterimagesets-acm-hive-openshift-releases-chn-0
+  namespace: hive-clusterimagesets-acm-hive-openshift-releases-chn-ns-0
 spec:
-  type: GitHub
+  type: Git
   pathname: https://github.com/open-cluster-management/acm-hive-openshift-releases.git
   # Disable when using a Public repository
   #secretRef:

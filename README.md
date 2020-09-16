@@ -9,65 +9,63 @@ This repository provides a subscription that will populate all the latest OpenSh
 See the `Custom curated` section on controlling your own OpenShift release timelines with Advanced Cluster Management
 
 ## Latest supported images (ONLINE)
-- Populates the 2x latest OpenShift fast release images
+- Populates the latest OpenShift `fast` release images
 - Run the following command
 ```bash
 # Connect to you Red hat Advanced Cluster Management hub
-# On OpenShift Dedicated, run "oc new-project ocp-clusterimagesets"
-oc apply -k subscription/
+# On OpenShift Dedicated, run "oc new-project hive-clusterimagesets"
+make subscribe-fast
 ```
 - After about 60s the Create Cluster console will list the latest supported OpenShift images
 ### Stable channel images
-- To include `stable` channel images activate the subscription-stable.yaml
+- Populates the latest 2x `stable` release images
 ```bash
-oc apply -f subscription/subscription-stable.yaml
-
-# Remove the fast channel subscription if you no longer want those release images
-oc -n hive delete appsub openshift-release-fast-images
-```
-### Alternate Make commands
-```
-# Connect to you Red hat Advanced Cluster Management hub
-make subscribe-fast
-
-# OR Stable
 make subscribe-stable
 ```
 
-### How to pause the channels
+### Alternate full CLI command
+- Populates the latest `fast` release images
+```bash
+oc apply -k subscribe/
+```
+
+### How to pause the subscription
 #### Prerequisites
 1. The fast channel subscription has been applied
 2. Logged into the ACM hub
 #### Pause the Fast Channel subscription
 ```bash
-oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
-
-# Alternate
 make pause-fast
+
+# Full CLI command:
+oc -n hive patch appsub hive-clusterimagesets-subscription-fast-0 --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
 ```
 #### Unpause the Fast Channel subscription
 ```bash
-oc -n hive patch appsub openshift-release-fast-images --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
-
-# Alternate
 make unpause-fast
+
+# Full CLI command:
+oc -n hive patch appsub hive-clusterimagesets-subscription-fast-0 --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
 ```
-_Note: `*-stable` is also supported._
+_Note: `hive-clusterimagesets-subscription-stable-0` resource name can be substituted, in the CLI pause commands, if you are working with `stable` release images._
 
 ### Continuous updates
-- This repository periodically updates as new fast and stable channel release images are minted
+- This repository periodically updates as new fast and stable release images are minted
 - Changes in this repository will be applied to your subscribed cluster
 - This is the stable channel list being followed by this repository, [link](https://github.com/openshift/cincinnati-graph-data/blob/master/channels/stable-4.3.yaml)
 
 ### Uninstall
-```
-oc delete -f subscription/subscription-stable.yaml  #If your using the stable channel
-oc delete -k subscription/
+```bash
+make unsubscribe-all
+
+# Full CLI commands:
+oc delete -k subscribe/
+oc delete -f subscribe/subscription-stable.yaml  #If your using the stable channel
 ```
 
 ## Custom curated (ONLINE)
 - Fork this repository
-- Update the the `./subscription/channel.yaml` file, changing `open-cluster-management` organization name to your `organization name` or `github name` for the forked repository.
+- Update the the `./subscribe/channel.yaml` file, changing the organization `open-cluster-management` to your `organization_name` or `github_username` where you forked the repository.
 ```yaml
 spec:
   type: GitHub
@@ -77,11 +75,11 @@ spec:
 - Commit and push your changes to the forked repository
 - Run the following command
 ```bash
-oc apply -k subscription/   #fast channel
-oc apply -f subscription/subscription-stable.yaml   #stable channel
+make subscribe-fast   #fast channel
+make subscribe-stable #stable channel
 ```
-- After about 60s the Create Cluster user interface will list the new images available in your forked repository
-- Add new OpenShift install images by created additional files in the `clusterImageSets/stable/*` and `clusterImageSets/fast/*` directories
+- After about 60s the Create Cluster console will list the new images available from your forked repository
+- Add new OpenShift install images by created additional files in the `clusterImageSets/stable/` or `clusterImageSets/fast/` directories
 
 ## How to get new versions
 - This repository will automatically update with the latest stable and fast versions
@@ -105,13 +103,13 @@ spec:
 - Make sure the images are loaded in the OFFLINE image registry referenced in the YAML
 - Apply a subset of the YAML files
 ```bash
-oc apply -f clusterImageSets/FILE_NAME.yaml
+oc apply -f clusterImageSets/CHANNEL/VERSION/FILE_NAME.yaml
 ```
-- The Create Cluster user interface will list only the images available from the `cluseterImageSets` directory
+- The Create Cluster console will list only the images available from the `cluseterImageSets` directory
 
 ## Secure Github repostiory
-- Uncomment the secret reference in `subscription/channel.yaml`
-- Create a `subscription/secret.yaml` file with the following contents
+- Uncomment the secret reference in `subscribe/channel.yaml`
+- Create a `subscribe/secret.yaml` file with the following contents
 ```yaml
   ---
   apiVersion: v1
@@ -126,11 +124,12 @@ oc apply -f clusterImageSets/FILE_NAME.yaml
 - The following command is used to encode base64: `echo "VALUE_TO_ENCODE" | base64`  place the output in the yaml file.
 - Create the secret
 ```bash
-oc apply -f subscription/secret.yaml
-oc apply -k subscription/
+make subscribe-fast
+# OR
+make subscribe-stable
 ```
 
-# Support a new OpenShift version via Travis
+# Development, to support a new OpenShift version via Travis
 Update the Travis variable: `LIST_VERSIONS`
 Make sure to enclose the space separated version numbers with quotes.
 ```

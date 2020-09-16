@@ -1,0 +1,11 @@
+---
+apiVersion: v1                    
+kind: Namespace
+metadata:
+  name: hive-clusterimagesets                             
+---
+apiVersion: v1                      
+kind: Namespace
+metadata:
+  name: hive-clusterimagesets-acm-hive-openshift-releases-chn-ns-0
+  
