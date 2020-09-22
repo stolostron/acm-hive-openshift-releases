@@ -1,10 +1,11 @@
 # Author: jnpacker
 import sys
 import os
+from distutils.version import LooseVersion
 
 LIST_VERSION = os.environ.get("LIST_VERSIONS")
 if not LIST_VERSION:
-    print(">>ERROR<< Make sure the VERSIONS environment variable is configured\n")
+    print(">>ERROR<< Make sure the LIST_VERSIONS environment variable is configured\n")
     sys.exit(2)
 
 VERSIONS = LIST_VERSION.split(" ")
@@ -23,7 +24,7 @@ for version in VERSIONS:
     prunePath = path + "/" + version
     print("\nPruning path: " + prunePath)
     filesDirs = os.listdir(prunePath)
-    sortedData = sorted(filesDirs, reverse=True)
+    sortedData = sorted(filesDirs, key=LooseVersion, reverse=True)
     print("Found: " + str(sortedData))
 
     counter = 1
