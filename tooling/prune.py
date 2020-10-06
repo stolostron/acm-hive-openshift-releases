@@ -23,7 +23,7 @@ if  not os.path.isdir(path):
 for version in VERSIONS:
     prunePath = path + "/" + version
     print("\nPruning path: " + prunePath)
-    if not os.path.isdir(prunePath):
+    if os.path.isdir(prunePath):
         filesDirs = os.listdir(prunePath)
         sortedData = sorted(filesDirs, key=LooseVersion, reverse=True)
         print("Found: " + str(sortedData))
