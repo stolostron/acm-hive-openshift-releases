@@ -23,19 +23,22 @@ if  not os.path.isdir(path):
 for version in VERSIONS:
     prunePath = path + "/" + version
     print("\nPruning path: " + prunePath)
-    filesDirs = os.listdir(prunePath)
-    sortedData = sorted(filesDirs, key=LooseVersion, reverse=True)
-    print("Found: " + str(sortedData))
+    if not os.path.isdir(prunePath):
+        filesDirs = os.listdir(prunePath)
+        sortedData = sorted(filesDirs, key=LooseVersion, reverse=True)
+        print("Found: " + str(sortedData))
 
-    counter = 1
-    for i in sortedData:
-        filePath = (prunePath + "/" + i).replace("//","/")
-        if counter > keep and os.path.isfile(filePath):
-            print("Pruning: " + filePath)
-            os.remove(filePath)
-        else:
-            print("Leaving: " + filePath)
-        counter = counter + 1
+        counter = 1
+        for i in sortedData:
+            filePath = (prunePath + "/" + i).replace("//","/")
+            if counter > keep and os.path.isfile(filePath):
+                print("Pruning: " + filePath)
+                os.remove(filePath)
+            else:
+                print("Leaving: " + filePath)
+            counter = counter + 1
+    else:
+        print("\nPruning path not found\n")
 
 
 
