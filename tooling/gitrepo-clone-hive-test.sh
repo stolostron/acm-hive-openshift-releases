@@ -6,7 +6,7 @@ fi
 
 if [ -d hive-cluster-testing ]; then
   cd hive-cluster-testing
-  git checkout master
+  git checkout main
   git pull
   cd ..
 else
