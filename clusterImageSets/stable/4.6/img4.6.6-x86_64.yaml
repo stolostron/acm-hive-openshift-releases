@@ -4,6 +4,6 @@ metadata:
   labels:
     channel: stable
     visible: 'true'
-  name: img4.6.3-x86-64
+  name: img4.6.6-x86-64
 spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:4.6.3-x86_64
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.6.6-x86_64
