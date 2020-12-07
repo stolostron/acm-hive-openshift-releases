@@ -39,7 +39,7 @@ for version in VERSIONS:
                     cisr = ("---\n" +
                             "apiVersion: hive.openshift.io/v1\n"
                             "kind: ClusterImageSet\nmetadata:\n"
-                            "  name: img" + imgName + "\n"
+                            "  name: img" + imgName + "-appsub\n"
                             "  labels:\n"
                             "    channel: candidate\n"
                             "    visible: \"false\"\n"
