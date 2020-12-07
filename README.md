@@ -1,3 +1,6 @@
+# NOTICE:
+On **12-07-2020** we changed the default naming convention for the images. We added a `-appsub` suffix, so that we would not block upgrades nor easily overlap with user created images. If you directly reference an image name in your scripts, you will need to modify your image reference to include the `-appsub` suffix.
+
 # OpenShift Release Images
 This repository provides a subscription that will populate all the latest OpenShift images into Advanced Cluster Management for OpenShift deployments. More information about OpenShift release images and the channels mentioned below can be found here: https://docs.openshift.com/container-platform/4.4/updating/updating-cluster-between-minor.html#understanding-upgrade-channels_updating-cluster-between-minor
 
