@@ -1,3 +1,5 @@
+STABLE_KEEP_COUNT ?=2
+FAST_KEEP_COUNT ?=1
 all:
 	@echo "Travis commands:"
 	@echo "  _> make sync-images-job"
@@ -17,14 +19,22 @@ verify-oc-cli:
 update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
 	python3 tooling/promote-stable-clusterimagesets.py
+	make visible-image
 	make prune-images
 	#./tooling/gitrepo-commitpush-hive-test.sh
 
+visible-images:
+	@echo === Start ClusterImageSet mark visability ===
+	python3 tooling/keep-visible.py ${FAST_KEEP_COUNT} clusterImageSets/fast
+	@echo
+	python3 tooling/keep-visible.py ${STABLE_KEEP_COUNT} clusterImageSets/stable
+	@echo === Finished visability ===	
+
 prune-images:
 	@echo === Start ClusterImageSet pruning ===
-	python3 tooling/prune.py 1 clusterImageSets/fast
+	python3 tooling/prune.py ${FAST_KEEP_COUNT} clusterImageSets/fast
 	@echo
-	python3 tooling/prune.py 2 clusterImageSets/stable
+	python3 tooling/prune.py ${STABLE_KEEP_COUNT} clusterImageSets/stable
 	@echo === Finished Pruning ===
 
 setup-env:
