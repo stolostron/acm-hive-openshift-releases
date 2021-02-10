@@ -1,4 +1,3 @@
-# Author: jnpacker
 import sys
 import os
 from distutils.version import LooseVersion
@@ -13,7 +12,7 @@ if (len(sys.argv) != 3):
     print("Command example: python prune.py <COUNT_TO_KEEP> <PATH_TO_PRUNE>\n  If COUNT_TO_KEEP is 3, at most, three latest versions will remain\n")
     sys.exit(1)
 
-keep = int(sys.argv[1])
+keep = int(sys.argv[1]) + 1 # Now that we keep 1 invisible image, we must account for it in pruning
 path = sys.argv[2]
 
 if  not os.path.isdir(path):

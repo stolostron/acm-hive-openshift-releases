@@ -1,5 +1,3 @@
-# Author: jnpacker
-
 import requests
 import os
 import os.path
