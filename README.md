@@ -11,7 +11,10 @@ This repository provides a subscription that will populate all the latest OpenSh
 
 See the `Custom curated` section on controlling your own OpenShift release timelines with Advanced Cluster Management
 
-## Latest supported images (ONLINE)
+# Red Hat Advanced Cluster Management for Kubernetes 2.2
+With this release, the subscription that imports the fast channel is already present. If you want to use a different channel, first pause the existing `fast` channel subscription using [these instructions](https://github.com/open-cluster-management/rhacm-docs/blob/2.2_stage/manage_cluster/release_images.adoc). Once the included subscription is disabled, follow the steps below to switch to a different channel.
+
+## Latest supported images (ONLINE) - DEFAULT
 - Populates the latest OpenShift `fast` release images
 - Run the following command
 ```bash
@@ -20,37 +23,30 @@ See the `Custom curated` section on controlling your own OpenShift release timel
 make subscribe-fast
 ```
 - After about 60s the Create Cluster console will list the latest supported OpenShift images
-### Stable channel images
+## Stable channel images
 - Populates the latest 2x `stable` release images
 ```bash
 make subscribe-stable
 ```
 
-### Alternate full CLI command
-- Populates the latest `fast` release images
-```bash
-oc apply -k subscribe/
-```
-
 ### How to pause the subscription
 #### Prerequisites
-1. The fast channel subscription has been applied
+1. The stable channel subscription has been applied
 2. Logged into the ACM hub
 #### Pause the Fast Channel subscription
 ```bash
-make pause-fast
+make pause-stable
 
-# Full CLI command:
-oc -n hive patch appsub hive-clusterimagesets-subscription-fast-0 --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
+# Alternate CLI command:
+oc -n hive patch appsub hive-clusterimagesets-subscription-stable-0 --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"true"}]'
 ```
-#### Unpause the Fast Channel subscription
+#### Unpause the Stable Channel subscription
 ```bash
-make unpause-fast
+make unpause-stable
 
-# Full CLI command:
-oc -n hive patch appsub hive-clusterimagesets-subscription-fast-0 --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
+# Alternate CLI command:
+oc -n hive patch appsub hive-clusterimagesets-subscription-stable-0 --type='json' -p='[{"op":"replace","path": "/metadata/labels/subscription-pause","value":"false"}]'
 ```
-_Note: `hive-clusterimagesets-subscription-stable-0` resource name can be substituted, in the CLI pause commands, if you are working with `stable` release images._
 
 ### Continuous updates
 - This repository periodically updates as new fast and stable release images are minted
@@ -61,7 +57,7 @@ _Note: `hive-clusterimagesets-subscription-stable-0` resource name can be substi
 ```bash
 make unsubscribe-all
 
-# Full CLI commands:
+# Alternate CLI commands:
 oc delete -k subscribe/
 oc delete -f subscribe/subscription-stable.yaml  #If your using the stable channel
 ```
