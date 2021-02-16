@@ -2,6 +2,13 @@ import requests
 import yaml
 import os
 import os.path
+import logging
+
+# Configure the logs
+logLevel = logging.INFO
+if os.environ.get("DEBUG") == "true":
+  logLevel = logging.DEBUG
+logging.basicConfig(format='%(asctime)s-%(levelname)s - %(message)s',level=logLevel)
 
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK")
 SLACK_FYI =  os.environ.get("SLACK_FYI")
@@ -10,11 +17,15 @@ CHANNELS = ["fast", "stable"]
 for version in VERSIONS:
   for channel in CHANNELS:
     channelUrl="https://raw.githubusercontent.com/openshift/cincinnati-graph-data/master/channels/" + channel + "-" + version + ".yaml"
-    print("---\n Checking for " + channel + " version of OpenShift " + version + " from Cincinnati\n  " + channelUrl)
+    logging.info("Checking for " + channel + " version of OpenShift " + version + " from Cincinnati\n  " + channelUrl)
     resp = requests.get(channelUrl)
     if resp.status_code != 200:
       # There was a problem
-      raise ValueError('GET ' + channelUrl + ' {}'.format(resp.status_code))
+      if resp.status_code == 404:
+        logging.warning('FileNotFound: GET ' + channelUrl + ' {}'.format(resp.status_code))
+        continue
+      else:
+        raise ValueError('GET ' + channelUrl + ' {}'.format(resp.status_code))
 
     # Obtain the channel YAML file from the Cincinnati repository in github
     images = yaml.load(resp.text, Loader=yaml.SafeLoader)
@@ -48,7 +59,7 @@ for version in VERSIONS:
             if not os.path.isfile(channelImage):
               # Deal with a scenario that the directory does not exist
               if not os.path.isdir(channelPath):
-                print(" (Create directory: " + channelPath + ")", end='')
+                logging.info(" (Create directory: " + channelPath + ")", end='')
                 os.mkdir(channelPath)
               with open(channelImage, 'w') as fileOut:
                 yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
@@ -68,5 +79,5 @@ for version in VERSIONS:
         else:
           print(" (SKIPPED)")
     if not foundVersion:
-      print(" No release images found matching " + version + " in versions: " + str(images['versions']))
-print("Done!")
+      logging.info(" No release images found matching " + version + " in versions: " + str(images['versions']))
+logging.info("Done!")
