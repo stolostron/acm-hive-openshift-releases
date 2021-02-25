@@ -59,7 +59,7 @@ for version in VERSIONS:
             if not os.path.isfile(channelImage):
               # Deal with a scenario that the directory does not exist
               if not os.path.isdir(channelPath):
-                logging.info(" (Create directory: " + channelPath + ")", end='')
+                logging.info(" (Create directory: " + channelPath + ")")
                 os.mkdir(channelPath)
               with open(channelImage, 'w') as fileOut:
                 yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
