@@ -20,7 +20,7 @@ update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
 	python3 tooling/promote-stable-clusterimagesets.py
 	make visible-images
-	make prune-images
+	# make prune-images
 	#./tooling/gitrepo-commitpush-hive-test.sh
 
 visible-images:
