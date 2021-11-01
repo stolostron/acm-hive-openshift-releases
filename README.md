@@ -1,5 +1,5 @@
 # NOTICE:
-On **12-07-2020** we changed the default naming convention for the images. We added a `-appsub` suffix, so that we would not block upgrades nor easily overlap with user created images. If you directly reference an image name in your scripts, you will need to modify your image reference to include the `-appsub` suffix.
+On **11-01-2021** we changed the default retention for clusterImageSets. Going forward we will include all supported clusterImageSets with the suffix `-appsub`, but only the latest clusterImageSet will be visible (`metadata.labels.visible: 'true'`) in the console (this is similar to what happens today). This was done to make sure that after two new Z stream releases, any provisioning flow that references a clusterImageSet will not be interrupted. 
 
 # OpenShift Release Images
 This repository provides a subscription that will populate all the latest OpenShift images into Advanced Cluster Management for OpenShift deployments. More information about OpenShift release images and the channels mentioned below can be found here: https://docs.openshift.com/container-platform/4.4/updating/updating-cluster-between-minor.html#understanding-upgrade-channels_updating-cluster-between-minor
