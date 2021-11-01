@@ -12,7 +12,8 @@ logging.basicConfig(format='%(asctime)s-%(levelname)s - %(message)s',level=logLe
 
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK")
 SLACK_FYI =  os.environ.get("SLACK_FYI")
-VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
+BRANCH = environ.get("TRAVIS_BRANCH")
+VERSIONS = os.environ.get("LIST_VERSIONS-"+BRANCH).split(" ")
 CHANNELS = ["fast", "stable"]
 for version in VERSIONS:
   for channel in CHANNELS:

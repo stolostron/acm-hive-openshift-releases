@@ -7,12 +7,12 @@ jobs:
       deploy:
         provider: pages
         skip-cleanup: true
-        target-branch: main
+        target-branch: $TRAVIS_BRANCH
         github-token: $GH_TOKEN
         keep-history: true
         verbose: true
         on:
-          branch: main
+          branch: $TRAVIS_BRANCH
     #- stage: promote-stable
     #  script: make promote-stable-job
 

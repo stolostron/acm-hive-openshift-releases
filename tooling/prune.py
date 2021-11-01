@@ -2,7 +2,8 @@ import sys
 import os
 from distutils.version import LooseVersion
 
-LIST_VERSION = os.environ.get("LIST_VERSIONS")
+BRANCH = environ.get("TRAVIS_BRANCH")
+LIST_VERSION = os.environ.get("LIST_VERSIONS-"+BRANCH)
 if not LIST_VERSION:
     print(">>ERROR<< Make sure the LIST_VERSIONS environment variable is configured\n")
     sys.exit(2)

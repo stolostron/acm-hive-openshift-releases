@@ -3,7 +3,8 @@ import os
 import os.path
 
 # To support new versions, add them to this array that is set for the Travis job LIST_VERSIONS="4.3 4.4 4.5"
-VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
+BRANCH = environ.get("TRAVIS_BRANCH")
+VERSIONS = os.environ.get("LIST_VERSIONS-"+BRANCH).split(" ")
 for version in VERSIONS:
     print(" Checking for release images: " + version + ".x")
     if not os.path.isdir("clusterImageSets/releases/" + version):
