@@ -6,7 +6,7 @@ fi
 
 if [ -d hive-cluster-testing ]; then
   cd hive-cluster-testing
-  git checkout main
+  git checkout $TRAVIS_BRANCH
   git pull
   cd ..
 else

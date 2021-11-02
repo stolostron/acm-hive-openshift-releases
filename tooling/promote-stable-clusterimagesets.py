@@ -3,6 +3,7 @@ import yaml
 import os
 import os.path
 import logging
+import get_support_version
 
 # Configure the logs
 logLevel = logging.INFO
@@ -12,7 +13,14 @@ logging.basicConfig(format='%(asctime)s-%(levelname)s - %(message)s',level=logLe
 
 SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK")
 SLACK_FYI =  os.environ.get("SLACK_FYI")
-VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
+
+BRANCH = os.environ.get("TRAVIS_BRANCH")
+VERSIONS = get_support_version.get_support_version(BRANCH)
+
+if len(VERSIONS)==0:
+    print(">>ERROR<< Make sure the VERSIONS is configured\n")
+    sys.exit(2) 
+
 CHANNELS = ["fast", "stable"]
 for version in VERSIONS:
   for channel in CHANNELS:
