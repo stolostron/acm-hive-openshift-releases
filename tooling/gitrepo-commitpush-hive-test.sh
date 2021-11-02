@@ -11,7 +11,7 @@ echo "Creating remote"
 git remote add hive-cluster-testing https://${GH_TOKEN}@github.com/open-cluster-management/hive-cluster-testing.git > /dev/null 2>&1
 
 echo "Push changes"
-git push --set-upstream hive-cluster-testing main
+git push --set-upstream hive-cluster-testing $TRAVIS_BRANCH
 
 echo "Remove ./hive-cluster-testing"
 cd ..
