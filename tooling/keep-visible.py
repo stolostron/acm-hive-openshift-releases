@@ -2,13 +2,11 @@ import yaml
 import sys
 import os
 from distutils.version import LooseVersion
+import get_support_version
 
-LIST_VERSION = os.environ.get("LIST_VERSIONS")
-if not LIST_VERSION:
-    print(">>ERROR<< Make sure the LIST_VERSIONS environment variable is configured\n")
-    sys.exit(2)
+BRANCH = os.environ.get("TRAVIS_BRANCH")
+VERSIONS = get_support_version.get_support_version(BRANCH)
 
-VERSIONS = LIST_VERSION.split(" ")
 if (len(sys.argv) != 3):
     print("Command example: python visible.py <COUNT_TO_KEEP> <PATH_TO_HIDE>\n  If COUNT_TO_KEEP is 3, at most, three latest versions will remain\n")
     sys.exit(1)
