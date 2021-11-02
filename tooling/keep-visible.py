@@ -2,10 +2,13 @@ import yaml
 import sys
 import os
 from distutils.version import LooseVersion
+import get_support_version
 
-LIST_VERSION = os.environ.get("LIST_VERSIONS")
+BRANCH = os.environ.get("TRAVIS_BRANCH")
+LIST_VERSION = get_support_version.get_support_version(BRANCH)
+
 if not LIST_VERSION:
-    print(">>ERROR<< Make sure the LIST_VERSIONS environment variable is configured\n")
+    print(">>ERROR<< Make sure the LIST_VERSIONS is configured\n")
     sys.exit(2)
 
 VERSIONS = LIST_VERSION.split(" ")

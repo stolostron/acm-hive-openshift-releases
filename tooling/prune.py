@@ -1,8 +1,12 @@
 import sys
 import os
 from distutils.version import LooseVersion
+import get_support_version
+import shutil
 
-LIST_VERSION = os.environ.get("LIST_VERSIONS")
+BRANCH = os.environ.get("TRAVIS_BRANCH")
+LIST_VERSION = get_support_version.get_support_version(BRANCH)
+
 if not LIST_VERSION:
     print(">>ERROR<< Make sure the LIST_VERSIONS environment variable is configured\n")
     sys.exit(2)
@@ -15,30 +19,24 @@ if (len(sys.argv) != 3):
 keep = int(sys.argv[1]) + 1 # Now that we keep 1 invisible image, we must account for it in pruning
 path = sys.argv[2]
 
-if  not os.path.isdir(path):
+if not os.path.isdir(path):
     print(">>ERROR<< Provide a valid path to prune\n")
     sys.exit(2)
 
+versionMap = {}
 for version in VERSIONS:
     prunePath = path + "/" + version
-    print("\nPruning path: " + prunePath)
-    if os.path.isdir(prunePath):
-        filesDirs = os.listdir(prunePath)
-        sortedData = sorted(filesDirs, key=LooseVersion, reverse=True)
-        print("Found: " + str(sortedData))
+    print("\nSupporting path: " + prunePath)
+    versionMap[prunePath] = ""
 
-        counter = 1
-        for i in sortedData:
-            filePath = (prunePath + "/" + i).replace("//","/")
-            if counter > keep and os.path.isfile(filePath):
-                print("Pruning: " + filePath)
-                os.remove(filePath)
-            else:
-                print("Leaving: " + filePath)
-            counter = counter + 1
+filesDirs = os.listdir(path)
+for fileDir in filesDirs:
+    curDir = path + "/" + fileDir
+    if curDir in versionMap:
+        print("Leaving : " + curDir)
     else:
-        print("\nPruning path not found\n")
-
+        print("Removing: " + curDir)
+        shutil.rmtree(curDir)
 
 
 
