@@ -16,12 +16,14 @@ verify-oc-cli:
 	@echo Client Version should be at least 4.4
 	@oc version | grep "Client Version"
 
+cleanup-images:
+	tooling/cleanup-clusterimagesets.sh
+
 update-images: setup-env
 	python3 tooling/create-ocp-clusterimagesets.py
 	python3 tooling/promote-stable-clusterimagesets.py
 	make visible-images
-	# make prune-images
-	#./tooling/gitrepo-commitpush-hive-test.sh
+	make prune-images
 
 visible-images:
 	@echo === Start ClusterImageSet mark visability ===
@@ -40,10 +42,8 @@ prune-images:
 setup-env:
 	tooling/setup-env.sh
 
-commit-push:
-	tooling/commit-push.sh
 
-sync-images-job: update-images commit-push
+sync-images-job: cleanup-images update-images
 	echo "DONE!"
 
 subscribe-stable: subscribe-fast
