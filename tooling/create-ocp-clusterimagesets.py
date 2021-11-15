@@ -1,9 +1,15 @@
 import requests
 import os
 import os.path
+import get_support_version
 
-# To support new versions, add them to this array that is set for the Travis job LIST_VERSIONS="4.3 4.4 4.5"
-VERSIONS = os.environ.get("LIST_VERSIONS").split(" ")
+BRANCH = os.environ.get("TARGET_BRANCH")
+VERSIONS = get_support_version.get_support_version(BRANCH)
+
+if len(VERSIONS)==0:
+    print(">>ERROR<< Make sure the VERSIONS is configured\n")
+    sys.exit(2)
+
 for version in VERSIONS:
     print(" Checking for release images: " + version + ".x")
     if not os.path.isdir("clusterImageSets/releases/" + version):

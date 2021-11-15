@@ -1,0 +1,43 @@
+name: sync-clustersetimage-cron
+
+on:
+  schedule:
+    - cron:  '0 3 * * *'
+jobs:
+  sync-clusterimageset-release-2_2:
+    name: sync-clusterimageset-release-2.2
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: sync-clusterimageset
+        run: make sync-images-job
+        env:
+          TARGET_BRANCH: release-2.2
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./clusterImageSets
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: release-2.2
+          keep_files: true
+          destination_dir: clusterImageSets
+
+  sync-clusterimageset-release-2_3:
+    name: sync-clusterimageset-release-2.3
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: sync-clusterimageset
+        run: make sync-images-job
+        env:
+          TARGET_BRANCH: release-2.3
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./clusterImageSets
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: release-2.3
+          keep_files: true
+          destination_dir: clusterImageSets
