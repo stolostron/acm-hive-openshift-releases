@@ -3,7 +3,7 @@
   kind: Subscription
   metadata:
     annotations:
-      apps.open-cluster-management.io/git-branch: main
+      apps.open-cluster-management.io/git-branch: release-2.3
       apps.open-cluster-management.io/git-path: clusterImageSets/releases
     labels:
       app: hive-clusterimagesets
