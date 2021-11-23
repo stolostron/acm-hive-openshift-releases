@@ -1,50 +1,15 @@
 STABLE_KEEP_COUNT ?=2
 FAST_KEEP_COUNT ?=1
 all:
-	@echo "Travis commands:"
-	@echo "  _> make sync-images-job"
-	@echo ""
 	@echo "Subscribe commands:"
 	@echo "  _> make subscribe-fast"
 	@echo "  _> make subscribe-stable"
 	@echo "  _> make subscribe-candidate"
 	@echo "  _> make unsubscribe-all"
-	@echo "Manual commands:"
-	@echo "  _> make update-images"
 
 verify-oc-cli:
 	@echo Client Version should be at least 4.4
 	@oc version | grep "Client Version"
-
-update-images: setup-env
-	python3 tooling/create-ocp-clusterimagesets.py
-	python3 tooling/promote-stable-clusterimagesets.py
-	make visible-images
-	make prune-images
-	#./tooling/gitrepo-commitpush-hive-test.sh
-
-visible-images:
-	@echo === Start ClusterImageSet mark visability ===
-	python3 tooling/keep-visible.py ${FAST_KEEP_COUNT} clusterImageSets/fast
-	@echo
-	python3 tooling/keep-visible.py ${STABLE_KEEP_COUNT} clusterImageSets/stable
-	@echo === Finished visability ===	
-
-prune-images:
-	@echo === Start ClusterImageSet pruning ===
-	python3 tooling/prune.py ${FAST_KEEP_COUNT} clusterImageSets/fast
-	@echo
-	python3 tooling/prune.py ${STABLE_KEEP_COUNT} clusterImageSets/stable
-	@echo === Finished Pruning ===
-
-setup-env:
-	tooling/setup-env.sh
-
-commit-push:
-	tooling/commit-push.sh
-
-sync-images-job: update-images commit-push
-	echo "DONE!"
 
 subscribe-stable: subscribe-fast
 	oc -n hive-clusterimagesets apply -f subscribe/subscription-stable.yaml
