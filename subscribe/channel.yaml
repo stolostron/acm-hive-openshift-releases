@@ -6,7 +6,7 @@ metadata:
   namespace: hive-clusterimagesets
 spec:
   type: Git
-  pathname: https://github.com/open-cluster-management/acm-hive-openshift-releases.git
+  pathname: https://github.com/stolostron/acm-hive-openshift-releases.git
   # Disable when using a Public repository
   #secretRef:
   #  name: my-github-secret
