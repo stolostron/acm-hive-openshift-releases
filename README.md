@@ -12,7 +12,7 @@ This repository provides a subscription that will populate all the latest OpenSh
 See the `Custom curated` section on controlling your own OpenShift release timelines with Advanced Cluster Management
 
 # Red Hat Advanced Cluster Management for Kubernetes 2.2
-With this release, the subscription that imports the fast channel is already present. If you want to use a different channel, first pause the existing `fast` channel subscription using [these instructions](https://github.com/open-cluster-management/rhacm-docs/blob/2.2_stage/manage_cluster/release_images.adoc). Once the included subscription is disabled, follow the steps below to switch to a different channel.
+With this release, the subscription that imports the fast channel is already present. If you want to use a different channel, first pause the existing `fast` channel subscription using [these instructions](https://github.com/stolostron/rhacm-docs/blob/2.2_stage/manage_cluster/release_images.adoc). Once the included subscription is disabled, follow the steps below to switch to a different channel.
 
 ## Latest supported images (ONLINE) - DEFAULT
 - Populates the latest OpenShift `fast` release images
@@ -64,7 +64,7 @@ oc delete -f subscribe/subscription-stable.yaml  #If your using the stable chann
 
 ## Custom curated (ONLINE)
 - Fork this repository
-- Update the the `./subscribe/channel.yaml` file, changing the organization `open-cluster-management` to your `organization_name` or `github_username` where you forked the repository.
+- Update the the `./subscribe/channel.yaml` file, changing the organization `stolostron` to your `organization_name` or `github_username` where you forked the repository.
 ```yaml
 spec:
   type: GitHub
