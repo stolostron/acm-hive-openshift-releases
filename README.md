@@ -11,8 +11,8 @@ This repository provides a subscription that will populate all the latest OpenSh
 
 See the `Custom curated` section on controlling your own OpenShift release timelines with Advanced Cluster Management
 
-# Red Hat Advanced Cluster Management for Kubernetes 2.2
-With this release, the subscription that imports the fast channel is already present. If you want to use a different channel, first pause the existing `fast` channel subscription using [these instructions](https://github.com/stolostron/rhacm-docs/blob/2.2_stage/manage_cluster/release_images.adoc). Once the included subscription is disabled, follow the steps below to switch to a different channel.
+# Red Hat Advanced Cluster Management for Kubernetes
+With this release, the subscription that imports the fast channel is already present. If you want to use a different channel, first pause the existing `fast` channel subscription using [these instructions](https://github.com/stolostron/rhacm-docs/blob/2.4_stage/clusters/release_images.adoc). Once the included subscription is disabled, follow the steps below to switch to a different channel.
 
 ## Latest supported images (ONLINE) - DEFAULT
 - Populates the latest OpenShift `fast` release images
@@ -64,7 +64,7 @@ oc delete -f subscribe/subscription-stable.yaml  #If your using the stable chann
 
 ## Custom curated (ONLINE)
 - Fork this repository
-- Update the the `./subscribe/channel.yaml` file, changing the organization `stolostron` to your `organization_name` or `github_username` where you forked the repository.
+- Update the `./subscribe/channel.yaml` file, changing the organization `stolostron` to your `organization_name` or `github_username` where you forked the repository.
 ```yaml
 spec:
   type: GitHub
@@ -87,7 +87,7 @@ make subscribe-stable #stable channel
 - This is the install image repository being used: https://quay.io/repository/openshift-release-dev/ocp-release?tab=tags
 - These are the streams being followed by this repository: https://github.com/openshift/cincinnati-graph-data/blob/master/channels/
 
-## (Technical Preview) Usecase - OFFLINE - limited images
+## Usecase - OFFLINE - limited images
 - Copy the `clusterImageSets` directory to a system that has access to the disconnected Red Hat Advanced Cluster Management Hub
 - Delete the YAML files for OpenShift versions you do not want to host OFFLINE
 - Modify the `clusterImageSet` YAML files for the remaining OpenShift release images to point to the correct `OFFLINE` repository
@@ -106,7 +106,7 @@ oc apply -f clusterImageSets/CHANNEL/VERSION/FILE_NAME.yaml
 ```
 - The Create Cluster console will list only the images available from the `cluseterImageSets` directory
 
-## Secure Github repostiory
+## Secure Github repository
 - Uncomment the secret reference in `subscribe/channel.yaml`
 - Create a `subscribe/secret.yaml` file with the following contents
 ```yaml
@@ -126,11 +126,4 @@ oc apply -f clusterImageSets/CHANNEL/VERSION/FILE_NAME.yaml
 make subscribe-fast
 # OR
 make subscribe-stable
-```
-
-# Development, to support a new OpenShift version via Travis
-Update the Travis variable: `LIST_VERSIONS`
-Make sure to enclose the space separated version numbers with quotes.
-```
-LIST_VERSIONS = "4.3 4.4 4.5"
 ```
