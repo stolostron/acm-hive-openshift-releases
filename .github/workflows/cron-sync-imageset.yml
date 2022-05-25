@@ -1,8 +1,12 @@
 name: sync-clustersetimage-cron
 
 on:
-  schedule:
-    - cron:  '10 * * * *'
+  pull_request:
+    types:
+      - opened
+      - created
+      - reopened
+      
 jobs:
   sync-clusterimageset-release-2_2:
     name: sync-clusterimageset-release-2.2
