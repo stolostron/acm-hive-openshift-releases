@@ -3,6 +3,9 @@ name: sync-clustersetimage-cron
 on:
   schedule:
     - cron:  '0 3 * * *'
+  pull_request:
+    branches:
+      - main
 jobs:
   sync-clusterimageset-release-2_2:
     name: sync-clusterimageset-release-2.2
