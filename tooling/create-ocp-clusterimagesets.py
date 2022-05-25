@@ -17,7 +17,7 @@ for version in VERSIONS:
         print(" Create directory: " + newDir)
         os.mkdir(newDir)
     
-    resp = requests.get('https://quay.io/api/v1/repository/openshift-release-dev/ocp-release/image/')
+    resp = requests.get('https://quay.io/repository/openshift-release-dev/ocp-release?tab=tags')
     if resp.status_code != 200:
         # There was a problem
         raise ValueError('GET quay.io status code: %s\n%s' % (resp.status_code, resp.text))
