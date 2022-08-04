@@ -1,0 +1,10 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+  name: img4.11.0-0.art-assembly-rc.7-multi-2022-08-03-162248-x86-64-appsub
+  labels:
+    channel: candidate
+    visible: "false"
+spec:
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.11.0-0.art-assembly-rc.7-multi-2022-08-03-162248-x86_64
