@@ -27,7 +27,9 @@ for version in VERSIONS:
         # Loop through all images found in quay.io
         for tagInfo in resp.json()['tags']:
             tag = tagInfo["name"]
-            if ("x86_64" in tag and version+"." in tag):
+            #Should ignore img4.11.0-multi-x86_64
+            #Should include img4.11.0-multi and img4.11.2-x86_64
+            if ((version+"." in tag) and (str(tag).endswith("multi") or (str(tag).endswith("x86_64") and "multi" not in tag))):
                 print('Checking tag: {}'.format(tag), end='')
                 # Check if we already have the file in the stable, fast or releases channel
                 fileName="img" + tag + ".yaml"
