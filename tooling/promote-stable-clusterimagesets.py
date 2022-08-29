@@ -4,15 +4,45 @@ import os
 import os.path
 import logging
 import get_support_version
+def MoveToChannel( filePath, channel ):
+    print (" Move " + filePath + " to channel " + channel)
+    if os.path.isfile(filePath):
+      print(" (Found)", end='')
+      # Load the current yaml
+      with open(filePath, 'r') as fileIn:
+        fastClusterImageSet = yaml.load(fileIn, Loader=yaml.SafeLoader)
+      
+      # Update the channel
+      if fastClusterImageSet['metadata']['labels']['channel'] != channel and fastClusterImageSet['metadata']['labels']['channel'] != "stable" :
+        fastClusterImageSet['metadata']['labels']['channel'] = channel
+        fastClusterImageSet['metadata']['labels']['visible'] = "false"
+        with open(filePath, 'w') as fileOut:
+          yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False)
+        print(" (Channel changed)", end='')
 
+        # Place the YAML into the correct channel
+        channelPath = "clusterImageSets/" + channel + "/" + version + "/"
+        channelImage = filePath.replace("releases", channel, 1)
+        if not os.path.isfile(channelImage):
+          # Deal with a scenario that the directory does not exist
+          if not os.path.isdir(channelPath):
+            logging.info(" (Create directory: " + channelPath + ")")
+            os.mkdir(channelPath)
+          with open(channelImage, 'w') as fileOut:
+            yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
+          print(" (Published to " + channel + " channel)", end='')
+      else:
+        print(" (SKIPPED)")
+    # If the clusterImageSet yaml file is not found, do nothing
+    else:
+      print(" (SKIPPED)")
+            # Change the channel label is found
+    
 # Configure the logs
 logLevel = logging.INFO
 if os.environ.get("DEBUG") == "true":
   logLevel = logging.DEBUG
 logging.basicConfig(format='%(asctime)s-%(levelname)s - %(message)s',level=logLevel)
-
-SLACK_WEBHOOK = os.environ.get("SLACK_WEBHOOK")
-SLACK_FYI =  os.environ.get("SLACK_FYI")
 
 BRANCH = os.environ.get("TARGET_BRANCH")
 VERSIONS = get_support_version.get_support_version(BRANCH)
@@ -46,46 +76,11 @@ for version in VERSIONS:
         
         # Change the channel label is found
         filePath="clusterImageSets/releases/" + version + "/img"+imageTag+"-x86_64.yaml"
-        if os.path.isfile(filePath):
-          print(" (Found)", end='')
-          #stableFilePath="clusterImageSets/stable/" + version + "/img"+imageTag+"-x86_64.yaml"
-          # Load the current yaml
-          with open(filePath, 'r') as fileIn:
-            fastClusterImageSet = yaml.load(fileIn, Loader=yaml.SafeLoader)
-          
-          # Update the channel
-          if fastClusterImageSet['metadata']['labels']['channel'] != channel and fastClusterImageSet['metadata']['labels']['channel'] != "stable" :
-            fastClusterImageSet['metadata']['labels']['channel'] = channel
-            fastClusterImageSet['metadata']['labels']['visible'] = "true"
-            with open(filePath, 'w') as fileOut:
-              yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False)
-            print(" (Channel changed)", end='')
+        MoveToChannel(filePath, channel)
+        # Handle the multi arch image
+        filePath="clusterImageSets/releases/" + version + "/img"+imageTag+"-multi.yaml"
+        MoveToChannel(filePath, channel)
 
-            # Place the YAML into the correct channel
-            channelPath = "clusterImageSets/" + channel + "/" + version + "/"
-            channelImage = channelPath + "img"+imageTag+"-x86_64.yaml"
-            if not os.path.isfile(channelImage):
-              # Deal with a scenario that the directory does not exist
-              if not os.path.isdir(channelPath):
-                logging.info(" (Create directory: " + channelPath + ")")
-                os.mkdir(channelPath)
-              with open(channelImage, 'w') as fileOut:
-                yaml.dump(fastClusterImageSet, fileOut, default_flow_style=False) 
-              print(" (Published to " + channel + " channel)", end='')
-              if SLACK_WEBHOOK:
-                  slack_data = {'text': "*NEW* *ClusterImageSet* promoted to `"+channel+"` channel\nOpenShift Release `" + imageTag + "` has been published <https://github.com/open-cluster-management/acm-hive-openshift-releases/tree/master/clusterImageSets/"+channel+"/"+version+"|link>\nFYI: "+SLACK_FYI}
-                  response = requests.post(SLACK_WEBHOOK, json=slack_data, headers={'Content-Type': 'application/json'})
-                  if response.status_code != 200:
-                      raise ValueError('Request to slack returned status code: %s\n%s' % (response.status_code, response.text))
-                  print(" (Slack msg sent!)")
-              else:
-                  print(" (Slack not configured)")
-          else:
-            print(" (SKIPPED)")
-
-        # If the clusterImageSet yaml file is not found, do nothing
-        else:
-          print(" (SKIPPED)")
     if not foundVersion:
       logging.info(" No release images found matching " + version + " in versions: " + str(images['versions']))
 logging.info("Done!")

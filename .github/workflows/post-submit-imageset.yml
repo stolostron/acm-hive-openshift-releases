@@ -23,7 +23,6 @@ jobs:
           publish_dir: ./clusterImageSets
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: release-2.2
-          keep_files: true
           destination_dir: clusterImageSets
 
   sync-clusterimageset-release-2_3:
@@ -42,7 +41,6 @@ jobs:
           publish_dir: ./clusterImageSets
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: release-2.3
-          keep_files: true
           destination_dir: clusterImageSets
 
   sync-clusterimageset-release-2_4:
@@ -61,7 +59,6 @@ jobs:
           publish_dir: ./clusterImageSets
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: release-2.4
-          keep_files: true
           destination_dir: clusterImageSets
 
   sync-clusterimageset-release-2_5:
@@ -80,7 +77,6 @@ jobs:
           publish_dir: ./clusterImageSets
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: release-2.5
-          keep_files: true
           destination_dir: clusterImageSets
 
   sync-clusterimageset-release-2_6:
@@ -99,5 +95,4 @@ jobs:
           publish_dir: ./clusterImageSets
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: release-2.6
-          keep_files: true
           destination_dir: clusterImageSets
