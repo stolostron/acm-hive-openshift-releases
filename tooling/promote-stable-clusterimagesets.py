@@ -78,8 +78,8 @@ for version in VERSIONS:
         filePath="clusterImageSets/releases/" + version + "/img"+imageTag+"-x86_64.yaml"
         MoveToChannel(filePath, channel)
         # Handle the multi arch image
-        #filePath="clusterImageSets/releases/" + version + "/img"+imageTag+"-multi.yaml"
-        #MoveToChannel(filePath, channel)
+        filePath="clusterImageSets/releases/" + version + "/img"+imageTag+"-multi.yaml"
+        MoveToChannel(filePath, channel)
 
     if not foundVersion:
       logging.info(" No release images found matching " + version + " in versions: " + str(images['versions']))
