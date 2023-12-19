@@ -3,6 +3,7 @@ name: sync-clustersetimage-cron
 on:
   schedule:
     - cron:  '0 3 * * *'
+  workflow_dispatch: {}  
 jobs:
   sync-clusterimageset-release-2_3:
     name: sync-clusterimageset-release-2.3
