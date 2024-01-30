@@ -132,3 +132,21 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: backplane-2.4
           destination_dir: clusterImageSets
+
+  sync-clusterimageset-backplane-2_5:
+    name: sync-clusterimageset-backplane-2.5
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: sync-clusterimageset
+        run: make sync-images-job
+        env:
+          TARGET_BRANCH: backplane-2.5
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./clusterImageSets
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: backplane-2.5
+          destination_dir: clusterImageSets
