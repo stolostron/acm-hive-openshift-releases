@@ -1,7 +1,7 @@
 STABLE_KEEP_COUNT ?=2
 FAST_KEEP_COUNT ?=1
 all:
-	@echo "Travis commands:"
+	@echo "Commands:"
 	@echo "  _> make sync-images-job"
 	@echo ""
 	@echo "Subscribe commands:"
@@ -11,6 +11,14 @@ all:
 	@echo "  _> make unsubscribe-all"
 	@echo "Manual commands:"
 	@echo "  _> make update-images"
+	@echo ""
+	@echo "Branch management:"
+	@echo "  _> make suggest-branch    # Show recent branches and suggest next"
+	@echo "  _> make add-branch        # Interactive: add a new branch"
+	@echo ""
+	@echo "Validation:"
+	@echo "  _> make validate-images          # Validate YAML structure and format"
+	@echo "  _> make validate-images-registry # Validate + check images exist in registry"
 
 verify-oc-cli:
 	@echo Client Version should be at least 4.4
@@ -78,3 +86,17 @@ unpause-stable:
 
 delete-clusterimagesets:
 	oc -n hive-clusterimagesets delete clusterimagesets --all
+
+suggest-branch:
+	python3 tooling/add-branch.py
+
+add-branch:
+	python3 tooling/add-branch.py --interactive
+
+validate-images:
+	@echo === Validating ClusterImageSet YAML files ===
+	python3 tooling/validate-imagesets.py
+
+validate-images-registry:
+	@echo === Validating ClusterImageSet YAML files with registry checks ===
+	python3 tooling/validate-imagesets.py --check-registry

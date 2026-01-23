@@ -1,3 +1,20 @@
+# Copyright 2025 Red Hat, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-License-Identifier: Apache-2.0
+# This file was modified with assistance from generative AI.
+
 import requests
 import os
 import os.path
@@ -18,6 +35,24 @@ def compare_version(version1, version2):
     if int(version1List[1]) > int(version2List[1]):
        return True
     return False
+
+#check if branch should use SHA digest instead of tag
+#returns true for backplane-2.10 and higher
+def use_sha_digest(branch):
+    if branch is None:
+        return False
+    if not branch.startswith("backplane-"):
+        return False
+    try:
+        version = branch.replace("backplane-", "")
+        version_parts = version.split(".")
+        major = int(version_parts[0])
+        minor = int(version_parts[1])
+        return (major > 2) or (major == 2 and minor >= 11)
+    except (ValueError, IndexError):
+        return False
+
+USE_SHA = use_sha_digest(BRANCH)
      
 if len(VERSIONS)==0:
     print(">>ERROR<< Make sure the VERSIONS is configured\n")
@@ -54,6 +89,10 @@ for version in VERSIONS:
                 if not os.path.isfile("clusterImageSets/releases/" + version + "/" + fileName):
                     imgName=tag.replace("_","-")
                     yaml= open("clusterImageSets/releases/" + version + "/" + fileName,"w+")
+                    if USE_SHA:
+                        releaseImage = "quay.io/openshift-release-dev/ocp-release@" + tagInfo["manifest_digest"]
+                    else:
+                        releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tag
                     cisr = ("---\n" +
                             "apiVersion: hive.openshift.io/v1\n"
                             "kind: ClusterImageSet\nmetadata:\n"
@@ -62,7 +101,7 @@ for version in VERSIONS:
                             "    channel: candidate\n"
                             "    visible: \"false\"\n"
                             "spec:\n"
-                            "  releaseImage: quay.io/openshift-release-dev/ocp-release:" + tag + "\n")
+                            "  releaseImage: " + releaseImage + "\n")
                     yaml.write(cisr)
                     yaml.close()
                     print(" Created clusterImageSet")
