@@ -36,9 +36,9 @@ def compare_version(version1, version2):
        return True
     return False
 
-#check if branch should use SHA digest instead of tag
-#returns true for backplane-2.10 and higher
-def use_sha_digest(branch):
+#check if branch should use combined TAG@SHA format
+#returns true for backplane-2.11 and higher
+def use_combined_tag_sha(branch):
     if branch is None:
         return False
     if not branch.startswith("backplane-"):
@@ -52,7 +52,7 @@ def use_sha_digest(branch):
     except (ValueError, IndexError):
         return False
 
-USE_SHA = use_sha_digest(BRANCH)
+USE_COMBINED_TAG_SHA = use_combined_tag_sha(BRANCH)
      
 if len(VERSIONS)==0:
     print(">>ERROR<< Make sure the VERSIONS is configured\n")
@@ -89,8 +89,8 @@ for version in VERSIONS:
                 if not os.path.isfile("clusterImageSets/releases/" + version + "/" + fileName):
                     imgName=tag.replace("_","-")
                     yaml= open("clusterImageSets/releases/" + version + "/" + fileName,"w+")
-                    if USE_SHA:
-                        releaseImage = "quay.io/openshift-release-dev/ocp-release@" + tagInfo["manifest_digest"]
+                    if USE_COMBINED_TAG_SHA:
+                        releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tag + "@" + tagInfo["manifest_digest"]
                     else:
                         releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tag
                     cisr = ("---\n" +

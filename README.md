@@ -119,16 +119,18 @@ Next steps:
   3. The backplane-2.11 branch will be created automatically on first workflow run
 ```
 
-### SHA Digest Behavior
+### Release Image Format
 
-As of backplane-2.10, ClusterImageSet files use SHA digests instead of tags for the `releaseImage` field:
+ClusterImageSet files use different `releaseImage` formats depending on the branch:
 
 | Branch | releaseImage format |
 |--------|---------------------|
-| backplane-2.9 and below | `quay.io/.../ocp-release:4.19.0-x86_64` |
-| backplane-2.10 and above | `quay.io/.../ocp-release@sha256:...` |
+| backplane-2.10 and below | `quay.io/.../ocp-release:4.19.0-x86_64` |
+| backplane-2.11 and above | `quay.io/.../ocp-release:4.19.0-x86_64@sha256:...` |
 
-This is controlled by the `use_sha_digest()` function in `tooling/create-ocp-clusterimagesets.py`.
+The combined tag and SHA digest format provides both human-readable version information and cryptographic integrity verification.
+
+This is controlled by the `use_combined_tag_sha()` function in `tooling/create-ocp-clusterimagesets.py`.
 
 # Offline Deployments
 

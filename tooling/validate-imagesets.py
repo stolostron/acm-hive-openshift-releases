@@ -47,6 +47,7 @@ SHA_PATTERN = re.compile(r"^sha256:[a-f0-9]{64}$")
 TAG_PATTERN = re.compile(r"^[\w][\w.\-]*$")
 IMAGE_WITH_SHA = re.compile(r"^quay\.io/openshift-release-dev/ocp-release@(sha256:[a-f0-9]{64})$")
 IMAGE_WITH_TAG = re.compile(r"^quay\.io/openshift-release-dev/ocp-release:([\w][\w.\-]*)$")
+IMAGE_WITH_TAG_AND_SHA = re.compile(r"^quay\.io/openshift-release-dev/ocp-release:([\w][\w.\-]*)@(sha256:[a-f0-9]{64})$")
 
 
 class ValidationResult:
@@ -110,10 +111,14 @@ def validate_yaml_structure(file_path):
         return result
 
     # Validate release image format
+    tag_sha_match = IMAGE_WITH_TAG_AND_SHA.match(release_image)
     sha_match = IMAGE_WITH_SHA.match(release_image)
     tag_match = IMAGE_WITH_TAG.match(release_image)
 
-    if sha_match:
+    if tag_sha_match:
+        result.image_ref = tag_sha_match.group(2)  # Use SHA as the primary ref
+        result.image_type = 'tag_and_sha'
+    elif sha_match:
         result.image_ref = sha_match.group(1)
         result.image_type = 'sha'
     elif tag_match:
@@ -198,8 +203,8 @@ def main():
     results = []
     total_errors = 0
     total_warnings = 0
-    sha_count = 0
     tag_count = 0
+    tag_and_sha_count = 0
 
     start_time = time.time()
 
@@ -224,8 +229,8 @@ def main():
 
     # Process results
     for result in results:
-        if result.image_type == 'sha':
-            sha_count += 1
+        if result.image_type == 'tag_and_sha':
+            tag_and_sha_count += 1
         elif result.image_type == 'tag':
             tag_count += 1
 
@@ -250,7 +255,7 @@ def main():
     print("Validation Summary")
     print("=" * 60)
     print(f"Total files:     {len(yaml_files)}")
-    print(f"SHA-based:       {sha_count}")
+    print(f"Tag+SHA-based:   {tag_and_sha_count}")
     print(f"Tag-based:       {tag_count}")
     print(f"Errors:          {total_errors}")
     print(f"Warnings:        {total_warnings}")
