@@ -3,7 +3,7 @@ kind: ClusterImageSet
 metadata:
   labels:
     channel: stable
-    visible: 'true'
+    visible: 'false'
   name: img4.19.20-multi-appsub
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release:4.19.20-multi@sha256:a40cb2822e1a18fb17f37640afab9f5d22764f754f6497e11234fd287cbaa031
