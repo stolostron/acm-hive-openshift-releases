@@ -6,5 +6,6 @@ metadata:
   labels:
     channel: candidate
     visible: "false"
+    releaseTag: 4.19.0-ec.5-multi
 spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:4.19.0-ec.5-multi@sha256:59894e560b33b3e86ca9f3887c62e08f77065a348ad86158f1eeaaec5e0ee266
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.19.0-ec.5-multi

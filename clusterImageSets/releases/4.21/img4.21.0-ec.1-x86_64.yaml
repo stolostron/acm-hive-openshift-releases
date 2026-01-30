@@ -6,5 +6,6 @@ metadata:
   labels:
     channel: candidate
     visible: "false"
+    releaseTag: 4.21.0-ec.1-x86_64
 spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:4.21.0-ec.1-x86_64@sha256:db8ee32fa253e1dcd5977a9c75d426f251139b5372f960688e6bdbcf9da8ded7
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.21.0-ec.1-x86_64
