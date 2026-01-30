@@ -125,12 +125,12 @@ ClusterImageSet files use different `releaseImage` formats depending on the bran
 
 | Branch | releaseImage format |
 |--------|---------------------|
-| backplane-2.10 and below | `quay.io/.../ocp-release:4.19.0-x86_64` |
-| backplane-2.11 and above | `quay.io/.../ocp-release:4.19.0-x86_64@sha256:...` |
+| backplane-2.11 and below | `quay.io/.../ocp-release:4.19.0-x86_64` |
+| backplane-2.12 and above | `quay.io/.../ocp-release@sha256:...` |
 
-The combined tag and SHA digest format provides both human-readable version information and cryptographic integrity verification.
+The SHA-only format provides cryptographic integrity verification without the human-readable tag.
 
-This is controlled by the `use_combined_tag_sha()` function in `tooling/create-ocp-clusterimagesets.py`.
+This is controlled by the `use_sha_only()` function in `tooling/create-ocp-clusterimagesets.py`.
 
 # Offline Deployments
 

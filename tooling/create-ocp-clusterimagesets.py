@@ -36,9 +36,25 @@ def compare_version(version1, version2):
        return True
     return False
 
-#check if branch should use combined TAG@SHA format
+#check if branch should use SHA-only format
+#returns true for backplane-2.12 and higher
+def use_sha_only(branch):
+    if branch is None:
+        return False
+    if not branch.startswith("backplane-"):
+        return False
+    try:
+        version = branch.replace("backplane-", "")
+        version_parts = version.split(".")
+        major = int(version_parts[0])
+        minor = int(version_parts[1])
+        return (major > 2) or (major == 2 and minor >= 12)
+    except (ValueError, IndexError):
+        return False
+
+#check if branch should include releaseTag label
 #returns true for backplane-2.11 and higher
-def use_combined_tag_sha(branch):
+def include_release_tag_label(branch):
     if branch is None:
         return False
     if not branch.startswith("backplane-"):
@@ -52,7 +68,8 @@ def use_combined_tag_sha(branch):
     except (ValueError, IndexError):
         return False
 
-USE_COMBINED_TAG_SHA = use_combined_tag_sha(BRANCH)
+USE_SHA_ONLY = use_sha_only(BRANCH)
+INCLUDE_RELEASE_TAG_LABEL = include_release_tag_label(BRANCH)
      
 if len(VERSIONS)==0:
     print(">>ERROR<< Make sure the VERSIONS is configured\n")
@@ -89,17 +106,22 @@ for version in VERSIONS:
                 if not os.path.isfile("clusterImageSets/releases/" + version + "/" + fileName):
                     imgName=tag.replace("_","-")
                     yaml= open("clusterImageSets/releases/" + version + "/" + fileName,"w+")
-                    if USE_COMBINED_TAG_SHA:
-                        releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tag + "@" + tagInfo["manifest_digest"]
+                    if USE_SHA_ONLY:
+                        releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tagInfo["manifest_digest"]
                     else:
                         releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tag
+
+                    # Include releaseTag label for backplane-2.11 and above
+                    labels = "    channel: candidate\n    visible: \"false\"\n"
+                    if INCLUDE_RELEASE_TAG_LABEL:
+                        labels += "    releaseTag: " + tag + "\n"
+
                     cisr = ("---\n" +
                             "apiVersion: hive.openshift.io/v1\n"
                             "kind: ClusterImageSet\nmetadata:\n"
                             "  name: img" + imgName + "-appsub\n"
-                            "  labels:\n"
-                            "    channel: candidate\n"
-                            "    visible: \"false\"\n"
+                            "  labels:\n" +
+                            labels +
                             "spec:\n"
                             "  releaseImage: " + releaseImage + "\n")
                     yaml.write(cisr)
