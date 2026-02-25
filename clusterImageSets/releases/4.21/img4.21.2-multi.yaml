@@ -2,7 +2,7 @@ apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   labels:
-    channel: fast
+    channel: stable
     visible: 'false'
   name: img4.21.2-multi-appsub
 spec:
