@@ -88,10 +88,10 @@ delete-clusterimagesets:
 	oc -n hive-clusterimagesets delete clusterimagesets --all
 
 suggest-branch:
-	python3 tooling/add-branch.py
+	python3 tooling/add-branch.py $(if $(BRANCH),--branch $(BRANCH)) $(if $(OCP_VERSION),--ocp-aligned $(OCP_VERSION))
 
 add-branch:
-	python3 tooling/add-branch.py --interactive
+	python3 tooling/add-branch.py --add $(if $(BRANCH),--branch $(BRANCH)) $(if $(OCP_VERSION),--ocp-aligned $(OCP_VERSION))
 
 validate-images:
 	@echo === Validating ClusterImageSet YAML files ===

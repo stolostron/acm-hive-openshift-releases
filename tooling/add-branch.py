@@ -22,6 +22,7 @@ Shows recent branches and suggests the next version.
 Automatically updates all required files.
 """
 
+import argparse
 import json
 import sys
 import os
@@ -68,6 +69,16 @@ def suggest_next_ocp_versions(current_versions):
         new_versions.append(f"{major}.{minor + 1}")
 
     return new_versions
+
+def ocp_versions_from_aligned(aligned_version):
+    """Compute supported OCP versions [N-2, N-1, N, N+1] from the aligned version N"""
+    match = re.match(r'(\d+)\.(\d+)', aligned_version)
+    if not match:
+        print(f"Error: Invalid OCP version format '{aligned_version}' (expected e.g. 4.23)")
+        sys.exit(1)
+    major = int(match.group(1))
+    minor = int(match.group(2))
+    return [f"{major}.{minor + i}" for i in (-2, -1, 0, 1)]
 
 def generate_cron_job_block(branch_name):
     """Generate the job block for cron-sync-imageset.yml"""
@@ -155,6 +166,12 @@ def add_branch(branch_name, ocp_versions):
     print(f"  Updated {POST_SUBMIT_WORKFLOW}")
 
 def main():
+    parser = argparse.ArgumentParser(description="Add a new backplane branch to the repository")
+    parser.add_argument("--add", action="store_true", help="Apply changes (prompts for confirmation unless overrides are provided)")
+    parser.add_argument("--branch", help="Override the branch name (e.g., backplane-2.17)")
+    parser.add_argument("--ocp-aligned", help="Aligned OCP version (e.g., 4.23); computes supported range as N-2 to N+1")
+    args = parser.parse_args()
+
     if not os.path.isfile("supported-ocp-versions.json"):
         print("Error: Run this script from the repository root directory")
         sys.exit(1)
@@ -170,42 +187,56 @@ def main():
     print("-" * 50)
     for major, minor, branch, ocp_versions in branches[-3:]:
         print(f"  {branch}: OCP {', '.join(ocp_versions)}")
-
-    # Suggest next branch
-    latest = branches[-1]
-    next_major = latest[0]
-    next_minor = latest[1] + 1
-    next_branch = f"backplane-{next_major}.{next_minor}"
-    next_ocp_versions = suggest_next_ocp_versions(latest[3])
-
     print("-" * 50)
-    print(f"\n=== Suggested Next Branch ===")
+
+    # Determine branch name and OCP versions (override or auto-suggest)
+    latest = branches[-1]
+    if args.branch:
+        next_branch = args.branch
+    else:
+        next_major = latest[0]
+        next_minor = latest[1] + 1
+        next_branch = f"backplane-{next_major}.{next_minor}"
+
+    if args.ocp_aligned:
+        next_ocp_versions = ocp_versions_from_aligned(args.ocp_aligned)
+    else:
+        next_ocp_versions = suggest_next_ocp_versions(latest[3])
+
+    label = "Override" if (args.branch or args.ocp_aligned) else "Suggested"
+    print(f"\n=== {label} Next Branch ===")
     print(f"  Branch: {next_branch}")
     print(f"  OCP Versions: {', '.join(next_ocp_versions)}")
 
-    # Interactive mode
-    if len(sys.argv) > 1 and sys.argv[1] == "--interactive":
-        print("\n" + "=" * 50)
-        response = input(f"Add {next_branch} with OCP versions {next_ocp_versions}? [Y/n]: ").strip().lower()
-        if response in ('', 'y', 'yes'):
-            print(f"\nAdding {next_branch}...")
-            add_branch(next_branch, next_ocp_versions)
-            print(f"\nDone! Files updated:")
-            print(f"  - supported-ocp-versions.json")
-            print(f"  - {CRON_WORKFLOW}")
-            print(f"  - {POST_SUBMIT_WORKFLOW}")
-            print(f"\nNext steps:")
-            print(f"  1. Review the changes: git diff")
-            print(f"  2. Commit and create a PR to main")
-            print(f"  3. The {next_branch} branch will be created automatically on first workflow run")
-        else:
-            print("Aborted.")
-    else:
+    if not args.add:
         print("\n=== Files to Update ===")
         print("  1. supported-ocp-versions.json")
         print(f"  2. {CRON_WORKFLOW}")
         print(f"  3. {POST_SUBMIT_WORKFLOW}")
         print("\nRun 'make add-branch' to update all files automatically.")
+        return
+
+    # When overrides are explicit, apply directly; otherwise prompt
+    if args.branch or args.ocp_aligned:
+        confirmed = True
+    else:
+        print("\n" + "=" * 50)
+        response = input(f"Add {next_branch} with OCP versions {next_ocp_versions}? [Y/n]: ").strip().lower()
+        confirmed = response in ('', 'y', 'yes')
+
+    if confirmed:
+        print(f"\nAdding {next_branch}...")
+        add_branch(next_branch, next_ocp_versions)
+        print(f"\nDone! Files updated:")
+        print(f"  - supported-ocp-versions.json")
+        print(f"  - {CRON_WORKFLOW}")
+        print(f"  - {POST_SUBMIT_WORKFLOW}")
+        print(f"\nNext steps:")
+        print(f"  1. Review the changes: git diff")
+        print(f"  2. Commit and create a PR to main")
+        print(f"  3. The {next_branch} branch will be created automatically on first workflow run")
+    else:
+        print("Aborted.")
 
 if __name__ == "__main__":
     main()

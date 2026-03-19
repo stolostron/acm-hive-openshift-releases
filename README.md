@@ -73,14 +73,20 @@ Shows the last 3 backplane releases and suggests the next branch with appropriat
 make add-branch
 ```
 
-Interactive mode that:
-1. Shows the last 3 backplane releases
-2. Suggests the next branch and OCP versions
-3. Prompts for confirmation
-4. Automatically updates all required files:
-   - `supported-ocp-versions.json`
-   - `.github/workflows/cron-sync-imageset.yml`
-   - `.github/workflows/post-submit-imageset.yml`
+Prompts for confirmation, then automatically updates all required files:
+- `supported-ocp-versions.json`
+- `.github/workflows/cron-sync-imageset.yml`
+- `.github/workflows/post-submit-imageset.yml`
+
+To override the auto-suggested branch name or OCP versions, pass `BRANCH` and/or `OCP_VERSION`.
+`OCP_VERSION` is the aligned OCP release for this ACM/MCE version; the script derives the full supported range as N-2 to N+1 automatically.
+
+```bash
+make add-branch BRANCH=backplane-2.17 OCP_VERSION=4.22
+# Produces OCP versions: 4.20, 4.21, 4.22, 4.23
+```
+
+When overrides are provided, the change is applied directly without a confirmation prompt.
 
 After running, create a PR to `main`. The new branch will be created automatically when the GitHub Action runs.
 
