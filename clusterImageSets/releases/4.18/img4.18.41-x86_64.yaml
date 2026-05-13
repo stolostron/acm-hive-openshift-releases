@@ -4,6 +4,6 @@ metadata:
   labels:
     channel: fast
     visible: 'false'
-  name: img4.18.40-multi-appsub
+  name: img4.18.41-x86-64-appsub
 spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:4.18.40-multi
+  releaseImage: quay.io/openshift-release-dev/ocp-release:4.18.41-x86_64
