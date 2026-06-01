@@ -107,7 +107,7 @@ for version in VERSIONS:
                     imgName=tag.replace("_","-")
                     yaml= open("clusterImageSets/releases/" + version + "/" + fileName,"w+")
                     if USE_SHA_ONLY:
-                        releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tagInfo["manifest_digest"]
+                        releaseImage = "quay.io/openshift-release-dev/ocp-release@" + tagInfo["manifest_digest"]
                     else:
                         releaseImage = "quay.io/openshift-release-dev/ocp-release:" + tag
 
