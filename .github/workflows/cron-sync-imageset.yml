@@ -281,6 +281,8 @@ jobs:
         run: make sync-images-job
         env:
           TARGET_BRANCH: backplane-2.17
+      - name: validate-imagesets
+        run: make validate-images
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

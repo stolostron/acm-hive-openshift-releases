@@ -94,6 +94,8 @@ def generate_cron_job_block(branch_name):
         run: make sync-images-job
         env:
           TARGET_BRANCH: {branch_name}
+      - name: validate-imagesets
+        run: make validate-images
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -118,6 +120,8 @@ def generate_post_submit_job_block(branch_name):
         run: make sync-images-job
         env:
           TARGET_BRANCH: {branch_name}
+      - name: validate-imagesets
+        run: make validate-images
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

@@ -48,6 +48,8 @@ TAG_PATTERN = re.compile(r"^[\w][\w.\-]*$")
 IMAGE_WITH_SHA = re.compile(r"^quay\.io/openshift-release-dev/ocp-release@(sha256:[a-f0-9]{64})$")
 IMAGE_WITH_TAG = re.compile(r"^quay\.io/openshift-release-dev/ocp-release:([\w][\w.\-]*)$")
 IMAGE_WITH_TAG_AND_SHA = re.compile(r"^quay\.io/openshift-release-dev/ocp-release:([\w][\w.\-]*)@(sha256:[a-f0-9]{64})$")
+# Detects the common mistake of writing :sha256: instead of @sha256:
+IMAGE_COLON_DIGEST = re.compile(r"^quay\.io/openshift-release-dev/ocp-release:(sha256:[a-f0-9]{64})$")
 
 
 class ValidationResult:
@@ -124,6 +126,11 @@ def validate_yaml_structure(file_path):
     elif tag_match:
         result.image_ref = tag_match.group(1)
         result.image_type = 'tag'
+    elif IMAGE_COLON_DIGEST.match(release_image):
+        result.add_error(
+            f"Invalid releaseImage format: {release_image} — "
+            f"digest separator must be '@', not ':' (use ...ocp-release@sha256:... )"
+        )
     else:
         result.add_error(f"Invalid releaseImage format: {release_image}")
 
