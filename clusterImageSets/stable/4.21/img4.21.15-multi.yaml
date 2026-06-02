@@ -7,4 +7,4 @@ metadata:
     visible: 'true'
   name: img4.21.15-multi-appsub
 spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:sha256:3a996412c2b8c81664aaa50bc86e5c6628ad6e05a2257adf9dc25b4b9bb7359e
+  releaseImage: quay.io/openshift-release-dev/ocp-release@sha256:3a996412c2b8c81664aaa50bc86e5c6628ad6e05a2257adf9dc25b4b9bb7359e

@@ -8,4 +8,4 @@ metadata:
     visible: "false"
     releaseTag: 4.22.0-ec.5-x86_64
 spec:
-  releaseImage: quay.io/openshift-release-dev/ocp-release:sha256:354270425f0cb661d5723910eb9d5ab7bd9510cdff43919c32695849bf0599f4
+  releaseImage: quay.io/openshift-release-dev/ocp-release@sha256:354270425f0cb661d5723910eb9d5ab7bd9510cdff43919c32695849bf0599f4
