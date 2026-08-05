@@ -2,9 +2,9 @@ apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   labels:
-    channel: fast
+    channel: stable
     releaseTag: 4.20.31-multi
-    visible: 'false'
+    visible: 'true'
   name: img4.20.31-multi-appsub
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release@sha256:935e375c978ef93249a8e8c947c0beacffcf1387b9c9f04e795ecf5cc6e3bc15
