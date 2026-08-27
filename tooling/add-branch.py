@@ -71,13 +71,21 @@ def suggest_next_ocp_versions(current_versions):
     return new_versions
 
 def ocp_versions_from_aligned(aligned_version):
-    """Compute supported OCP versions [N-2, N-1, N, N+1] from the aligned version N"""
+    """Compute supported OCP versions [N-2, N-1, N, N+1] from aligned version N.
+
+    Handles the OCP 5.0 rollover where 5.0 is treated as the successor to 4.23,
+    and includes 5.1 in the support window for backplane-5.0.
+    """
     match = re.match(r'(\d+)\.(\d+)', aligned_version)
     if not match:
         print(f"Error: Invalid OCP version format '{aligned_version}' (expected e.g. 4.23)")
         sys.exit(1)
     major = int(match.group(1))
     minor = int(match.group(2))
+
+    if major == 5 and minor == 0:
+        return ["4.21", "4.22", "4.23", "5.0", "5.1"]
+
     return [f"{major}.{minor + i}" for i in (-2, -1, 0, 1)]
 
 def generate_cron_job_block(branch_name):
