@@ -1,0 +1,11 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterImageSet
+metadata:
+  name: img5.0.0-rc.2-multi-appsub
+  labels:
+    channel: candidate
+    visible: "false"
+    releaseTag: 5.0.0-rc.2-multi
+spec:
+  releaseImage: quay.io/openshift-release-dev/ocp-release@sha256:5a86578bd861ae6ce3b21dba7afe35bb2616dec6dad815f8d750f34bd3ca0750
