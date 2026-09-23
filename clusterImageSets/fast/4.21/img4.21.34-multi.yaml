@@ -4,7 +4,7 @@ metadata:
   labels:
     channel: fast
     releaseTag: 4.21.34-multi
-    visible: 'false'
+    visible: 'true'
   name: img4.21.34-multi-appsub
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release@sha256:b6bdbb9508197e3ca704994cfae3441d1ad3526a6569793919b8e3938dfc559a
