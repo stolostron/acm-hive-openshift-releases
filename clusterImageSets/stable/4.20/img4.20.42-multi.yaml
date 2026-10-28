@@ -4,7 +4,7 @@ metadata:
   labels:
     channel: stable
     releaseTag: 4.20.42-multi
-    visible: 'true'
+    visible: 'false'
   name: img4.20.42-multi-appsub
 spec:
   releaseImage: quay.io/openshift-release-dev/ocp-release@sha256:96113f9831313f90e1cf9b5f873ae201831d679fc55b60cf4eedecfbbd8434ab
